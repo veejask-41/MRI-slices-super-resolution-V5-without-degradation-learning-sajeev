@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import torch.fft
+import torch.nn.functional as F
 
 
 class CustomMiniPatchGAN(nn.Module):
@@ -96,39 +97,40 @@ class GeneratorFrequencyFilter(nn.Module):
         return (sinc * gaussian).unsqueeze(0).unsqueeze(0)  # Shape: (1, 1, size, size)
 
 
+# GDNGaussianSincFilter class with filter resizing
 class GDNGaussianSincFilter(nn.Module):
     def __init__(self, size, sigma, sinc_scale):
         super(GDNGaussianSincFilter, self).__init__()
-        # Ensure size is odd to center the filter correctly
         if size % 2 == 0:
             size += 1
-
         self.register_buffer("filter", self.create_filter(size, sigma, sinc_scale))
 
     def forward(self, x):
         # Apply FFT
         x_fft = torch.fft.fft2(x)
+
+        # Resize filter to match input dimensions
+        resized_filter = F.interpolate(
+            self.filter,
+            size=(x_fft.shape[2], x_fft.shape[3]),
+            mode="bilinear",
+            align_corners=False,
+        )
+
         # Apply the filter in the frequency domain
-        filtered_fft = x_fft * self.filter
+        filtered_fft = x_fft * resized_filter
+
         # Apply Inverse FFT
-        x_filtered = torch.fft.ifft2(filtered_fft).real  # Use the real part
+        x_filtered = torch.fft.ifft2(filtered_fft).real
         return x_filtered
 
     def create_filter(self, size, sigma, sinc_scale):
-        # Create meshgrid for filter coordinates
         ind = torch.arange(-(size // 2), (size // 2) + 1, dtype=torch.float32)
         X, Y = torch.meshgrid(ind, ind, indexing="ij")
         radius = torch.sqrt(X**2 + Y**2)
-
-        # Sinc filter (normalized to frequency scale)
         sinc = torch.sin(sinc_scale * radius) / (sinc_scale * radius)
-        sinc[radius == 0] = 1  # Handle the NaN at the center
-
-        # Gaussian filter
+        sinc[radius == 0] = 1
         gaussian = torch.exp(-0.5 * (X**2 + Y**2) / sigma**2)
-
-        # Combined filter
         combined_filter = sinc * gaussian
-        combined_filter /= combined_filter.sum()  # Normalize the filter
-
+        combined_filter /= combined_filter.sum()
         return combined_filter.view(1, 1, size, size)

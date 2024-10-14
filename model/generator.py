@@ -1,33 +1,47 @@
 import torch
 import torch.nn as nn
+import segmentation_models_pytorch as smp
 from networks import GeneratorFrequencyFilter
-from RRDB_architecture import RRDBNet
 
 
-class Generator(nn.Module):
-    def __init__(self, in_nc, out_nc, nf, nb, gc=32, image_size=256):
-        super(Generator, self).__init__()
-        self.freq_filter = GeneratorFrequencyFilter(image_size)
-        self.rrdb_net = RRDBNet(in_nc, out_nc, nf, nb, gc)
+class SRUNet(nn.Module):
+    def __init__(self, image_size, in_channels=1, out_channels=1, freeze_encoder=True):
+        super(SRUNet, self).__init__()
+
+        # Initialize frequency filter
+        self.frequency_filter = GeneratorFrequencyFilter(image_size)
+
+        # Initialize UNet with EfficientNet-b3 encoder
+        self.unet = smp.Unet(
+            encoder_name="efficientnet-b3",  # Suitable for MRI super-resolution
+            encoder_weights="imagenet",  # Pre-trained weights
+            in_channels=in_channels,  # Typically 1 for grayscale MRI images
+            classes=out_channels,  # Number of output channels
+        )
+
+        # Optionally freeze encoder layers to prevent updating
+        if freeze_encoder:
+            for param in self.unet.encoder.parameters():
+                param.requires_grad = False
 
     def forward(self, x):
-        x = self.freq_filter(x)  # Apply frequency domain filtering
-        x = self.rrdb_net(x)  # Apply RRDB network for super-resolution
-        return x
+        # Pass through frequency filter
+        x_filtered = self.frequency_filter(x)
+        # Pass the filtered image through the UNet
+        return self.unet(x_filtered)
 
 
-image_size = 256  # Define the image size used for the filter
-in_nc = 1  # Number of input channels (e.g., RGB)
-out_nc = 1  # Number of output channels (should match input if same space)
-nf = 64  # Number of features
-nb = 23  # Number of blocks
+# Define image size and instantiate model
+image_size = 256
+model = SRUNet(
+    image_size=image_size, in_channels=1, out_channels=1, freeze_encoder=True
+)
 
-# Create generator
-generator = Generator(in_nc, out_nc, nf, nb, image_size=image_size)
+# Input image
+x = torch.randn(
+    1, 1, image_size, image_size
+)  # Example input with batch size 1, grayscale
 
-# Dummy input - replace with actual data
-input_image = torch.randn(1, in_nc, image_size, image_size)  # Random noise image
-
-# Get the output
-output_image = generator(input_image)
-print(output_image.shape)
+# Forward pass
+output = model(x)
+print(output.shape)
