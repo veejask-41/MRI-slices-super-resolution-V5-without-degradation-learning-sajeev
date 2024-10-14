@@ -1,13 +1,13 @@
 import torch
 import torch.nn as nn
-from networks import FrequencyFiltering
+from networks import GeneratorFrequencyFilter
 from RRDB_architecture import RRDBNet
 
 
 class Generator(nn.Module):
     def __init__(self, in_nc, out_nc, nf, nb, gc=32, image_size=256):
         super(Generator, self).__init__()
-        self.freq_filter = FrequencyFiltering(image_size)
+        self.freq_filter = GeneratorFrequencyFilter(image_size)
         self.rrdb_net = RRDBNet(in_nc, out_nc, nf, nb, gc)
 
     def forward(self, x):

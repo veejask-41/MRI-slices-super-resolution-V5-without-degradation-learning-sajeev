@@ -67,9 +67,9 @@ class SingleChannelVGG(nn.Module):
         return x
 
 
-class FrequencyFiltering(nn.Module):
+class GeneratorFrequencyFilter(nn.Module):
     def __init__(self, image_size):
-        super(FrequencyFiltering, self).__init__()
+        super(GeneratorFrequencyFilter, self).__init__()
         # Create a Gaussian-sinc combined filter in frequency domain
         self.register_buffer("filter", self.create_gaussian_sinc_filter(image_size))
 
@@ -94,3 +94,41 @@ class FrequencyFiltering(nn.Module):
         sinc[r == 0] = 1  # Handling NaN at the center
         gaussian = torch.exp(-(x**2 + y**2) / (2 * sigma**2))
         return (sinc * gaussian).unsqueeze(0).unsqueeze(0)  # Shape: (1, 1, size, size)
+
+
+class GDNGaussianSincFilter(nn.Module):
+    def __init__(self, size, sigma, sinc_scale):
+        super(GDNGaussianSincFilter, self).__init__()
+        # Ensure size is odd to center the filter correctly
+        if size % 2 == 0:
+            size += 1
+
+        self.register_buffer("filter", self.create_filter(size, sigma, sinc_scale))
+
+    def forward(self, x):
+        # Apply FFT
+        x_fft = torch.fft.fft2(x)
+        # Apply the filter in the frequency domain
+        filtered_fft = x_fft * self.filter
+        # Apply Inverse FFT
+        x_filtered = torch.fft.ifft2(filtered_fft).real  # Use the real part
+        return x_filtered
+
+    def create_filter(self, size, sigma, sinc_scale):
+        # Create meshgrid for filter coordinates
+        ind = torch.arange(-(size // 2), (size // 2) + 1, dtype=torch.float32)
+        X, Y = torch.meshgrid(ind, ind, indexing="ij")
+        radius = torch.sqrt(X**2 + Y**2)
+
+        # Sinc filter (normalized to frequency scale)
+        sinc = torch.sin(sinc_scale * radius) / (sinc_scale * radius)
+        sinc[radius == 0] = 1  # Handle the NaN at the center
+
+        # Gaussian filter
+        gaussian = torch.exp(-0.5 * (X**2 + Y**2) / sigma**2)
+
+        # Combined filter
+        combined_filter = sinc * gaussian
+        combined_filter /= combined_filter.sum()  # Normalize the filter
+
+        return combined_filter.view(1, 1, size, size)
