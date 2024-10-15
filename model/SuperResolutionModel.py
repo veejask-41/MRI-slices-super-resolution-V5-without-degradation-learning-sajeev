@@ -13,14 +13,24 @@ from utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversaria
 class SuperResolutionModel:
     def __init__(self, opt):
         # Initialize the models based on the configuration
+        self.device = torch.device(
+            "cuda" if torch.cuda.is_available() and opt.gpu_ids[0] != -1 else "cpu"
+        )
+
+        # Initialize the models based on the configuration
         self.sr_unet = SRUNet(
             image_size=opt.image_size,
             in_channels=opt.in_channels,
             out_channels=opt.out_channels,
             freeze_encoder=opt.freeze_encoder,
+        ).to(
+            self.device
+        )  # Ensure model is on the correct device
+
+        self.degradation_network = DegradationNetwork(image_size=opt.image_size).to(
+            self.device
         )
-        self.degradation_network = DegradationNetwork(image_size=opt.image_size)
-        self.vgg_patch_gan = VGGStylePatchGAN(patch_size=70)
+        self.vgg_patch_gan = VGGStylePatchGAN(patch_size=opt.patch_size).to(self.device)
 
         # Optimizers for SRUNet and VGGStylePatchGAN only, since DegradationNetwork is not trained
         self.optimizer_sr = torch.optim.Adam(self.sr_unet.parameters(), lr=opt.lr)
@@ -68,16 +78,12 @@ class SuperResolutionModel:
             hr_slice = hr_volume[i][None, :, :]  # Shape: (1, 256, 256)
 
             # Convert slices to tensors and move to the appropriate device
-            lr_tensor = torch.tensor(lr_slice, dtype=torch.float32).unsqueeze(
-                0
+            lr_tensor = (
+                torch.tensor(lr_slice, dtype=torch.float32).to(self.device).unsqueeze(0)
             )  # Shape: (1, 1, 256, 256)
-            hr_tensor = torch.tensor(hr_slice, dtype=torch.float32).unsqueeze(
-                0
+            hr_tensor = (
+                torch.tensor(hr_slice, dtype=torch.float32).to(self.device).unsqueeze(0)
             )  # Shape: (1, 1, 256, 256)
-
-            # Move tensors to the device set for the model
-            lr_tensor = lr_tensor.to(self.sr_unet.device)
-            hr_tensor = hr_tensor.to(self.sr_unet.device)
 
             # Append to the slice list
             self.lr_slices.append(lr_tensor)
