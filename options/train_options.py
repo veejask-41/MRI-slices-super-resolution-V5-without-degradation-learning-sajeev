@@ -37,6 +37,12 @@ class TrainOptions:
             "--batch_size", type=int, default=8, help="Batch size for training"
         )
         self.parser.add_argument(
+            "--epoch_count",
+            type=int,
+            default=50,
+            help="Start counting epochs from this number",
+        ),
+        self.parser.add_argument(
             "--n_epochs",
             type=int,
             default=50,
