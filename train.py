@@ -117,6 +117,8 @@ def main():
                 )
             )
 
+    model.save_final_models()
+
 
 if __name__ == "__main__":
     try:

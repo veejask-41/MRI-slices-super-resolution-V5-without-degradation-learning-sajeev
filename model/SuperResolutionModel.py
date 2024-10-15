@@ -3,6 +3,12 @@ import os
 import numpy as np
 import nibabel as nib
 
+from generator import SRUNet
+from degradation_network import DegradationNetwork
+from VGGStylePatchGAN import VGGStylePatchGAN
+
+from ..utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversarial_loss
+
 
 class SuperResolutionModel:
     def __init__(self, opt):
@@ -207,3 +213,22 @@ class SuperResolutionModel:
 
         print(f"Saved LR volume to {lr_file_path}")
         print(f"Saved SR volume to {sr_file_path}")
+
+    def save_final_models(self):
+        """
+        Saves the final trained SRUNet and VGGStylePatchGAN models to disk after training completion.
+        """
+        # Specify the folder and file paths for saving the models
+        save_folder = "final_models"
+        os.makedirs(save_folder, exist_ok=True)
+        sr_unet_file_path = os.path.join(save_folder, "SRUNet_final.pth")
+        vgg_patch_gan_file_path = os.path.join(
+            save_folder, "VGGStylePatchGAN_final.pth"
+        )
+
+        # Save the models
+        torch.save(self.sr_unet.state_dict(), sr_unet_file_path)
+        torch.save(self.vgg_patch_gan.state_dict(), vgg_patch_gan_file_path)
+
+        print(f"Saved final SRUNet model to {sr_unet_file_path}")
+        print(f"Saved final VGGStylePatchGAN model to {vgg_patch_gan_file_path}")
