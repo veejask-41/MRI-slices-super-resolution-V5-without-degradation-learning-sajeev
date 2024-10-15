@@ -64,6 +64,17 @@ def main():
         for i, data in enumerate(train_loader):
             high_res_images = data[1]
             low_res_images = data[0]
+
+            print(
+                f"Data batch {i}: HR shape {high_res_images.shape}, LR shape {low_res_images.shape}"
+            )
+
+            if high_res_images.shape[2:] != low_res_images.shape[2:]:
+                print(
+                    f"Mismatched shapes in batch {i}: HR shape {high_res_images.shape}, LR shape {low_res_images.shape}"
+                )
+                continue
+
             current_batch_size = len(data[0])
             total_iters += current_batch_size
             print("Checkpoint 6")
