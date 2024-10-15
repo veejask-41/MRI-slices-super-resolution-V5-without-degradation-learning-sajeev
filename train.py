@@ -19,33 +19,34 @@ def main():
     # torch.manual_seed(999)
     # if torch.cuda.is_available():
     #     torch.cuda.manual_seed_all(999)
-
+    print("Checkpoint 1")
     # Parse options
     opt = TrainOptions().parse()
-    opt.device = str(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+    print("Checkpoint 2")
+    # opt.device = str(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
-    # Create a model based on the options
-    model = create_model(opt)
-    model.to(opt.device)
+    # # Create a model based on the options
+    # model = create_model(opt)
+    # model.to(opt.device)
 
-    # Creating dataset instances
-    train_dataset = MRIDataset("./datasets/train_filenames.txt", limit=10)
-    val_dataset = MRIDataset("./datasets/val_filenames.txt", limit=10)
+    # # Creating dataset instances
+    # train_dataset = MRIDataset("./datasets/train_filenames.txt", limit=10)
+    # val_dataset = MRIDataset("./datasets/val_filenames.txt", limit=10)
 
-    # Creating data loaders
-    train_loader = DataLoader(
-        train_dataset, batch_size=8, shuffle=True, num_workers=opt.num_workers
-    )
-    val_loader = DataLoader(
-        val_dataset, batch_size=5, shuffle=False, num_workers=opt.num_workers
-    )
-
-    # dataset = create_dataset(opt)
-    # dataloader = DataLoader(
-    #     dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers
+    # # Creating data loaders
+    # train_loader = DataLoader(
+    #     train_dataset, batch_size=8, shuffle=True, num_workers=opt.num_workers
     # )
-    dataset_size = len(train_dataset)
-    print(f"The number of training images = {dataset_size}")
+    # val_loader = DataLoader(
+    #     val_dataset, batch_size=5, shuffle=False, num_workers=opt.num_workers
+    # )
+
+    # # dataset = create_dataset(opt)
+    # # dataloader = DataLoader(
+    # #     dataset, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers
+    # # )
+    # dataset_size = len(train_dataset)
+    # print(f"The number of training images = {dataset_size}")
 
     # # Create visualizer
     # visualizer = Visualizer(opt)
