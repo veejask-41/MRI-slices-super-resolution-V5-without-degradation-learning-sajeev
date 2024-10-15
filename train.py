@@ -22,6 +22,7 @@ def main():
 
     # Parse options
     opt = TrainOptions().parse()
+    opt.device = str(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
     # Create a model based on the options
     model = create_model(opt)
@@ -29,7 +30,7 @@ def main():
 
     # Creating dataset instances
     train_dataset = MRIDataset("./datasets/train_filenames.txt", limit=10)
-    val_dataset = MRIDataset("./datasets/val_filenames.txt", limit=13)
+    val_dataset = MRIDataset("./datasets/val_filenames.txt", limit=10)
 
     # Creating data loaders
     train_loader = DataLoader(
@@ -51,7 +52,8 @@ def main():
 
     # Optionally resume training
     if opt.continue_train:
-        load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, device)
+        load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, str(device))
+        print(f"Loading checkpoint on device: {device}")
 
     # Training loop
     total_iters = 0

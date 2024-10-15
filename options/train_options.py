@@ -180,6 +180,9 @@ class TrainOptions:
     def print_options(self, opt):
         message = "----------------- Options ---------------\n"
         for k, v in sorted(vars(opt).items()):
+            # Convert opt.device to a string if it's a torch.device object
+            if isinstance(v, torch.device):
+                v = str(v)
             default = self.parser.get_default(k)
             comment = f"\t[default: {default}]" if v != default else ""
             message += f"{k:>25}: {v:<30}{comment}\n"
