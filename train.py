@@ -48,79 +48,84 @@ def main():
     print(f"The number of training images = {dataset_size}")
     print("Checkpoint 3")
 
-    # # Create visualizer
-    # visualizer = Visualizer(opt)
+    # Create visualizer
+    visualizer = Visualizer(opt)
 
-    # # Optionally resume training
-    # if opt.continue_train:
-    #     load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, str(device))
-    #     print(f"Loading checkpoint on device: {device}")
+    # Optionally resume training
+    if opt.continue_train:
+        load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, str(device))
+        print(f"Loading checkpoint on device: {device}")
 
-    # # Training loop
-    # total_iters = 0
-    # for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):
-    #     epoch_start_time = time.time()
-    #     epoch_iter = 0
+    print("Checkpoint 4")
 
-    #     for i, data in enumerate(train_loader):
-    #         high_res_images = data[1]
-    #         low_res_images = data[0]
-    #         current_batch_size = len(data[0])
-    #         total_iters += current_batch_size
+    # Training loop
+    total_iters = 0
+    for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):
+        epoch_start_time = time.time()
+        epoch_iter = 0
+        print("Checkpoint 5")
 
-    #         mri_vol = {"LR": low_res_images, "HR": high_res_images}
+        for i, data in enumerate(train_loader):
+            high_res_images = data[1]
+            low_res_images = data[0]
+            current_batch_size = len(data[0])
+            total_iters += current_batch_size
+            print("Checkpoint 6")
 
-    #         model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
+            mri_vol = {"LR": low_res_images, "HR": high_res_images}
 
-    #         # Process each slice in the current volume
-    #         num_slices = len(model.lr_slices)
-    #         for slice_index in range(num_slices):
-    #             lr_slice, hr_slice = model.get_slice_pair(slice_index)
+            model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
+            print("Checkpoint 7")
 
-    #             model.optimize_parameters(
-    #                 lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
-    #             )  # Forward, backward pass, and optimize
+            # Process each slice in the current volume
+            num_slices = len(model.lr_slices)
+            for slice_index in range(num_slices):
+                lr_slice, hr_slice = model.get_slice_pair(slice_index)
 
-    #             # Print loss information at the specified frequency
-    #             if total_iters % opt.print_freq == 0:
-    #                 losses = model.get_current_losses()
-    #                 t_comp = (time.time() - epoch_start_time) / epoch_iter
-    #                 visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+                model.optimize_parameters(
+                    lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
+                )  # Forward, backward pass, and optimize
 
-    #             # Save the latest model at the specified frequency
-    #             if total_iters % opt.save_latest_freq == 0:
-    #                 print(
-    #                     "Saving the latest model (epoch %d, total_iters %d)"
-    #                     % (epoch, total_iters)
-    #                 )
-    #                 save_checkpoint(
-    #                     model, opt.checkpoint_dir, "latest", epoch, total_iters
-    #                 )
+                # Print loss information at the specified frequency
+                if total_iters % opt.print_freq == 0:
+                    losses = model.get_current_losses()
+                    t_comp = (time.time() - epoch_start_time) / epoch_iter
+                    visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
 
-    #         # Display visuals at the specified frequency of the slices of a certain MRI Volume
-    #         if total_iters % opt.display_freq == 0:
-    #             model.save_volume(epoch=epoch)
+                # Save the latest model at the specified frequency
+                if total_iters % opt.save_latest_freq == 0:
+                    print(
+                        "Saving the latest model (epoch %d, total_iters %d)"
+                        % (epoch, total_iters)
+                    )
+                    save_checkpoint(
+                        model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    )
 
-    #         # Save the model at the end of every epoch
-    #         if epoch % opt.save_epoch_freq == 0 and i == len(train_loader) - 1:
-    #             print(
-    #                 "Saving the model at the end of epoch %d, iters %d"
-    #                 % (epoch, total_iters)
-    #             )
-    #             save_checkpoint(
-    #                 model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
-    #             )
+            # Display visuals at the specified frequency of the slices of a certain MRI Volume
+            if total_iters % opt.display_freq == 0:
+                model.save_volume(epoch=epoch)
 
-    #         print(
-    #             "End of epoch %d / %d \t Time Taken: %d sec"
-    #             % (
-    #                 epoch,
-    #                 opt.n_epochs + opt.n_epochs_decay,
-    #                 time.time() - epoch_start_time,
-    #             )
-    #         )
+            # Save the model at the end of every epoch
+            if epoch % opt.save_epoch_freq == 0 and i == len(train_loader) - 1:
+                print(
+                    "Saving the model at the end of epoch %d, iters %d"
+                    % (epoch, total_iters)
+                )
+                save_checkpoint(
+                    model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
+                )
 
-    # model.save_final_models()
+            print(
+                "End of epoch %d / %d \t Time Taken: %d sec"
+                % (
+                    epoch,
+                    opt.n_epochs + opt.n_epochs_decay,
+                    time.time() - epoch_start_time,
+                )
+            )
+
+    model.save_final_models()
 
 
 if __name__ == "__main__":
