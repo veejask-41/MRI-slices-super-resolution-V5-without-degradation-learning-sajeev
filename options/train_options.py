@@ -95,7 +95,6 @@ class TrainOptions:
             default=2,
             help="Frequency of displaying results on the training console",
         )
-
         # options specific to super_resolution_model components
         self.parser.add_argument(
             "--image_size",
@@ -183,6 +182,8 @@ class TrainOptions:
             # Convert opt.device to a string if it's a torch.device object
             if isinstance(v, torch.device):
                 v = str(v)
+            if isinstance(v, list):  # Convert list to string to avoid formatting errors
+                v = ", ".join(map(str, v))
             default = self.parser.get_default(k)
             comment = f"\t[default: {default}]" if v != default else ""
             message += f"{k:>25}: {v:<30}{comment}\n"
