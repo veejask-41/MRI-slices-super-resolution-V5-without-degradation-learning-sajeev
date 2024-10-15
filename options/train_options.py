@@ -12,9 +12,9 @@ class TrainOptions:
     def initialize(self):
         if self.initialized:
             return
-        self.parser.add_argument(
-            "--dataroot", type=str, required=True, help="Path to the dataset directory"
-        )
+        # self.parser.add_argument(
+        #     "--dataroot", type=str, required=True, help="Path to the dataset directory"
+        # )
         self.parser.add_argument(
             "--name",
             type=str,
@@ -74,13 +74,13 @@ class TrainOptions:
         self.parser.add_argument(
             "--print_freq",
             type=int,
-            default=100,
+            default=2,
             help="Frequency of printing training results to the console",
         )
         self.parser.add_argument(
             "--save_latest_freq",
             type=int,
-            default=5000,
+            default=5,
             help="Frequency of saving the latest results during training",
         )
         self.parser.add_argument(
@@ -92,7 +92,7 @@ class TrainOptions:
         self.parser.add_argument(
             "--display_freq",
             type=int,
-            default=400,
+            default=2,
             help="Frequency of displaying results on the training console",
         )
 
@@ -106,13 +106,13 @@ class TrainOptions:
         self.parser.add_argument(
             "--in_channels",
             type=int,
-            default=3,
+            default=1,
             help="Number of input channels (e.g., 3 for RGB images)",
         )
         self.parser.add_argument(
             "--out_channels",
             type=int,
-            default=3,
+            default=1,
             help="Number of output channels (e.g., 3 for RGB images)",
         )
         self.parser.add_argument(
