@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import segmentation_models_pytorch as smp
-from networks import GeneratorFrequencyFilter
+from .networks import GeneratorFrequencyFilter
 
 
 class SRUNet(nn.Module):
