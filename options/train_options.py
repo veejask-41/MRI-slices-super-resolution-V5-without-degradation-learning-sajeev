@@ -22,6 +22,12 @@ class TrainOptions:
             help="Experiment name for saving logs and models",
         )
         self.parser.add_argument(
+            "--num_workers",
+            type=int,
+            default=4,
+            help="Number of subprocesses to use for data loading",
+        )
+        self.parser.add_argument(
             "--model_type",
             type=str,
             default="super_resolution_model",
