@@ -27,7 +27,6 @@ def main():
 
     # Create a model based on the options
     model = create_model(opt)
-    model.to(opt.device)
 
     # Creating dataset instances
     train_dataset = MRIDataset("./datasets/train_filenames.txt", limit=10)
