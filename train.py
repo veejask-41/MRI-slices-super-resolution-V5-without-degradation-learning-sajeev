@@ -61,7 +61,7 @@ def main():
         epoch_iter = 0
         print("Checkpoint 5")
 
-        for i, data in enumerate(train_loader):
+        for i, data in enumerate(train_loader, 0):
             print("Checkpoint 6")
 
             high_res_images = data[1]
