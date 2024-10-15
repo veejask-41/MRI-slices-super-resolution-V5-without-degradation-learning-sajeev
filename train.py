@@ -33,12 +33,8 @@ def main():
     val_dataset = MRIDataset("./dataset/val_filenames.txt", limit=10)
 
     # Creating data loaders
-    train_loader = DataLoader(
-        train_dataset, batch_size=8, shuffle=True, num_workers=opt.num_workers
-    )
-    val_loader = DataLoader(
-        val_dataset, batch_size=5, shuffle=False, num_workers=opt.num_workers
-    )
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=5, shuffle=False)
 
     # dataset = create_dataset(opt)
     # dataloader = DataLoader(
