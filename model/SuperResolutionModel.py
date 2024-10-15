@@ -12,7 +12,6 @@ from utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversaria
 
 class SuperResolutionModel:
     def __init__(self, opt):
-        # Initialize the models based on the configuration
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() and opt.gpu_ids[0] != -1 else "cpu"
         )
@@ -25,7 +24,7 @@ class SuperResolutionModel:
             freeze_encoder=opt.freeze_encoder,
         ).to(
             self.device
-        )  # Ensure model is on the correct device
+        )  # Move SRUNet model to the correct device
 
         self.degradation_network = DegradationNetwork(image_size=opt.image_size).to(
             self.device
@@ -48,18 +47,10 @@ class SuperResolutionModel:
     def set_input(self, data):
         """
         Prepares the input data by extracting slices from a 3D MRI volume.
-
-        Args:
-            data (dict): A dictionary containing 'LR' and 'HR' keys with respective 3D volumes.
-                        - data['LR']: Low-resolution MRI volume (shape: [150, 256, 256])
-                        - data['HR']: High-resolution MRI volume (shape: [150, 256, 256])
         """
         # Clear previous slice data
         self.lr_slices.clear()
         self.hr_slices.clear()
-
-        # Clear visuals for new data
-        self.current_visuals["SR"] = []
 
         # Ensure data has the right structure and load LR and HR volumes
         lr_volume = data["LR"]  # Expected shape: (150, 256, 256)
