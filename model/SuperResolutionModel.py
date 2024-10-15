@@ -3,7 +3,7 @@ import os
 import numpy as np
 import nibabel as nib
 
-from generator import SRUNet
+from model.SRUNet import SRUNet
 from degradation_network import DegradationNetwork
 from VGGStylePatchGAN import VGGStylePatchGAN
 

@@ -1,4 +1,4 @@
-from generator import SRUNet
+from SRUNet import SRUNet
 from degradation_network import DegradationNetwork
 from VGGStylePatchGAN import VGGStylePatchGAN
 from SuperResolutionModel import SuperResolutionModel
