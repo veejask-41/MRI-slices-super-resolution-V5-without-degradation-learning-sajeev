@@ -7,7 +7,7 @@ from .SRUNet import SRUNet
 from .degradation_network import DegradationNetwork
 from .VGGStylePatchGAN import VGGStylePatchGAN
 
-from ..utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversarial_loss
+from utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversarial_loss
 
 
 class SuperResolutionModel:
