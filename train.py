@@ -29,8 +29,8 @@ def main():
     model = create_model(opt)
 
     # Creating dataset instances
-    train_dataset = MRIDataset("./datasets/train_filenames.txt", limit=10)
-    val_dataset = MRIDataset("./datasets/val_filenames.txt", limit=10)
+    train_dataset = MRIDataset("./dataset/train_filenames.txt", limit=10)
+    val_dataset = MRIDataset("./dataset/val_filenames.txt", limit=10)
 
     # Creating data loaders
     train_loader = DataLoader(
