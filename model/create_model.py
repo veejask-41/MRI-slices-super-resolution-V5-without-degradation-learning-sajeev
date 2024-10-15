@@ -1,23 +1,22 @@
-from Generator import SRUNet
-from Discriminator import MultiGDNModel
+from generator import SRUNet
+from degradation_network import DegradationNetwork
+from VGGStylePatchGAN import VGGStylePatchGAN
+from SuperResolutionModel import SuperResolutionModel
 
 
 def create_model(opt):
-    if opt.model_type == "sr_unet":
-        # Create a Super-Resolution U-Net model
+    if opt.model_type == "super_resolution_model":
+        return SuperResolutionModel(opt)
+    elif opt.model_type == "sr_unet":
         return SRUNet(
             image_size=opt.image_size,
             in_channels=opt.in_channels,
             out_channels=opt.out_channels,
             freeze_encoder=opt.freeze_encoder,
         )
-    elif opt.model_type == "gdn":
-        # Create a Multi-GDN Model with custom parameters for each GDN
-        # opt.gdn_params = [{'size': 9, 'sigma': 1.0, 'sinc_scale': 0.3}, {'size': 11, 'sigma': 1.5, 'sinc_scale': 0.5}]
-        return MultiGDNModel(
-            gdn_params=opt.gdn_params,
-            in_channels=opt.in_channels,
-            out_channels=opt.out_channels,
-        )
+    elif opt.model_type == "multi_gdn":
+        return DegradationNetwork(image_size=opt.image_size)
+    elif opt.model_type == "vgg_patch_gan":
+        return VGGStylePatchGAN(patch_size=70)
     else:
-        raise ValueError(f"Model type '{opt.model_type}' not recognized.")
+        raise ValueError(f"Unknown model type: {opt.model_type}")

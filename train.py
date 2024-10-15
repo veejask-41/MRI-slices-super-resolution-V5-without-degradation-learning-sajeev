@@ -5,8 +5,10 @@ from torch.utils.data import DataLoader
 from model.create_model import create_model
 from data import create_dataset
 from options.train_options import TrainOptions
-from util.visualizer import Visualizer
-from util.checkpointing import save_checkpoint, load_checkpoint
+from utils.visualizer import Visualizer
+from utils.checkpointing import save_checkpoint, load_checkpoint
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
@@ -17,7 +19,10 @@ def main():
 
     # Parse options
     opt = TrainOptions().parse()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Create a model based on the options
+    model = create_model(opt)
+    model.to(opt.device)
 
     # Load dataset
     dataset = create_dataset(opt)
@@ -27,11 +32,6 @@ def main():
     dataset_size = len(dataset)
     print(f"The number of training images = {dataset_size}")
 
-    # Create model
-    model = create_model(opt)
-    model.setup(opt)
-    model = model.to(device)
-
     # Create visualizer
     visualizer = Visualizer(opt)
 
@@ -39,7 +39,7 @@ def main():
     if opt.continue_train:
         load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, device)
 
-    # Training Loop
+    # Training loop
     total_iters = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):
         epoch_start_time = time.time()
@@ -48,34 +48,46 @@ def main():
         for i, data in enumerate(dataloader):
             current_batch_size = data["input"].size(
                 0
-            )  # Assuming 'input' is a key in your data dictionary
+            )  # Assuming batch contains 'input'
             total_iters += current_batch_size
             epoch_iter += current_batch_size
 
-            model.set_input(data)  # Prepare input data
-            model.optimize_parameters()  # Forward, backward pass, and optimize
+            model.set_input(data)  # Prepare input data by slicing the MRI volume
 
-            if total_iters % opt.display_freq == 0:  # Display visuals
-                model.compute_visuals()
-                visualizer.display_current_results(
-                    model.get_current_visuals(), epoch, save_result=True
-                )
+            # Process each slice in the current volume
+            num_slices = len(model.lr_slices)
+            for slice_index in range(num_slices):
+                lr_slice, hr_slice = model.get_slice_pair(slice_index)
 
-            if total_iters % opt.print_freq == 0:  # Print losses
-                losses = model.get_current_losses()
-                t_comp = (time.time() - epoch_start_time) / epoch_iter
-                visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+                model.optimize_parameters(
+                    lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
+                )  # Forward, backward pass, and optimize
 
-            if total_iters % opt.save_latest_freq == 0:  # Save latest model
-                print(
-                    "Saving the latest model (epoch %d, total_iters %d)"
-                    % (epoch, total_iters)
-                )
-                save_checkpoint(model, opt.checkpoint_dir, "latest", epoch, total_iters)
+                # Display visuals at the specified frequency of the slices of a certain MRI Volume
+                if total_iters % opt.display_freq == 0:
+                    model.compute_visuals()
+                    visualizer.display_current_results(
+                        model.get_current_visuals(), epoch, save_result=True
+                    )
 
-            if (
-                epoch % opt.save_epoch_freq == 0 and i == len(dataloader) - 1
-            ):  # Save model at the end of every epoch
+                # Print loss information at the specified frequency
+                if total_iters % opt.print_freq == 0:
+                    losses = model.get_current_losses()
+                    t_comp = (time.time() - epoch_start_time) / epoch_iter
+                    visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+
+                # Save the latest model at the specified frequency
+                if total_iters % opt.save_latest_freq == 0:
+                    print(
+                        "Saving the latest model (epoch %d, total_iters %d)"
+                        % (epoch, total_iters)
+                    )
+                    save_checkpoint(
+                        model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    )
+
+            # Save the model at the end of every epoch
+            if epoch % opt.save_epoch_freq == 0 and i == len(dataloader) - 1:
                 print(
                     "Saving the model at the end of epoch %d, iters %d"
                     % (epoch, total_iters)

@@ -1,4 +1,5 @@
 import argparse
+import torch
 
 
 class TrainOptions:
@@ -23,8 +24,8 @@ class TrainOptions:
         self.parser.add_argument(
             "--model_type",
             type=str,
-            required=True,
-            help="Type of model to train: e.g., 'sr_unet', 'gdn'",
+            default="super_resolution_model",
+            help="Type of model to train: e.g., 'sr_unet', 'multi_gdn', 'vgg_patch_gan'",
         )
         self.parser.add_argument(
             "--batch_size", type=int, default=8, help="Batch size for training"
@@ -94,13 +95,85 @@ class TrainOptions:
             default=400,
             help="Frequency of displaying results on the training console",
         )
-        # More options can be added as necessary
+
+        # options specific to super_resolution_model components
+        self.parser.add_argument(
+            "--image_size",
+            type=int,
+            default=256,
+            help="Size of the input and output images (assumes square images)",
+        )
+        self.parser.add_argument(
+            "--in_channels",
+            type=int,
+            default=3,
+            help="Number of input channels (e.g., 3 for RGB images)",
+        )
+        self.parser.add_argument(
+            "--out_channels",
+            type=int,
+            default=3,
+            help="Number of output channels (e.g., 3 for RGB images)",
+        )
+        self.parser.add_argument(
+            "--freeze_encoder",
+            action="store_true",
+            help="Freeze encoder layers of the SRUNet model",
+        )
+        self.parser.add_argument(
+            "--patch_size",
+            type=int,
+            default=70,
+            help="Patch size for VGGStylePatchGAN model",
+        )
+        # Parameters for loss functions
+        self.parser.add_argument(
+            "--alpha",
+            type=float,
+            default=1.0,
+            help="Weight for perceptual quality loss",
+        )
+        self.parser.add_argument(
+            "--beta",
+            type=float,
+            default=1.0,
+            help="Weight for feature matching loss in perceptual loss",
+        )
+        self.parser.add_argument(
+            "--gamma",
+            type=float,
+            default=1.0,
+            help="Weight for style loss component in perceptual loss",
+        )
+        self.parser.add_argument(
+            "--delta",
+            type=float,
+            default=1.0,
+            help="Weight for adversarial loss in perceptual_adversarial_loss",
+        )
+        self.parser.add_argument(
+            "--lambda_tv",
+            type=float,
+            default=1.0,
+            help="Weight for total variation loss in GDNLoss",
+        )
+
         self.initialized = True
 
     def parse(self):
         if not self.initialized:
             self.initialize()
         opt = self.parser.parse_args()
+
+        # Determine the device to use based on --gpu_ids
+        str_ids = opt.gpu_ids.split(",")
+        opt.gpu_ids = [int(id) for id in str_ids if int(id) >= 0]  # Filter out -1 (CPU)
+        if len(opt.gpu_ids) > 0 and torch.cuda.is_available():
+            opt.device = torch.device(f"cuda:{opt.gpu_ids[0]}")
+            torch.cuda.set_device(opt.gpu_ids[0])  # Set the first GPU as the default
+        else:
+            opt.device = torch.device("cpu")
+
         self.print_options(opt)
         return opt
 

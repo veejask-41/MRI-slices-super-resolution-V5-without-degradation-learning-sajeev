@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision.models as models
 import torch.fft
 import torch.nn.functional as F
+from torchvision.models import VGG19_Weights
 
 
 class CustomMiniPatchGAN(nn.Module):
@@ -40,7 +41,7 @@ class CustomMiniPatchGAN(nn.Module):
 class SingleChannelVGG(nn.Module):
     def __init__(self):
         super(SingleChannelVGG, self).__init__()
-        vgg19 = models.vgg19(pretrained=True)
+        vgg19 = models.vgg19(weights=VGG19_Weights.IMAGENET1K_V1)
 
         # Load original VGG features
         original_vgg_features = vgg19.features
@@ -66,6 +67,40 @@ class SingleChannelVGG(nn.Module):
     def forward(self, x):
         x = self.vgg_layers(x)
         return x
+
+
+class DoubleChannelVGG(nn.Module):
+    def __init__(self):
+        super(DoubleChannelVGG, self).__init__()
+        vgg19 = models.vgg19(weights=VGG19_Weights.IMAGENET1K_V1)
+
+        # Load original VGG features
+        original_vgg_features = vgg19.features
+
+        # Modify the first convolutional layer for 2 input channels
+        first_conv_layer = nn.Conv2d(2, 64, kernel_size=3, stride=1, padding=1)
+
+        # Initialize weights for the two input channels by copying weights from the original single-channel weights
+        # We'll duplicate the weights across two channels or initialize the second channel with random weights
+        first_conv_layer.weight.data[:, 0:1, :, :] = (
+            original_vgg_features[0].weight.data[:, 0:1, :, :].clone()
+        )
+        first_conv_layer.weight.data[:, 1:2, :, :] = (
+            original_vgg_features[0].weight.data[:, 0:1, :, :].clone()
+        )
+        first_conv_layer.bias.data = original_vgg_features[0].bias.data.clone()
+
+        # Replace the first conv layer in the features list
+        modified_features = nn.Sequential(
+            first_conv_layer, *list(original_vgg_features.children())[1:]
+        )
+
+        # Assign modified features to the class variable
+        self.vgg_layers = modified_features
+
+    def forward(self, x):
+        # Pass input through modified VGG layers
+        return self.vgg_layers(x)
 
 
 class GeneratorFrequencyFilter(nn.Module):
