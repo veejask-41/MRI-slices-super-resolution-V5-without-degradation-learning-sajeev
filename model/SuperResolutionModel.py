@@ -3,9 +3,9 @@ import os
 import numpy as np
 import nibabel as nib
 
-from model.SRUNet import SRUNet
-from degradation_network import DegradationNetwork
-from VGGStylePatchGAN import VGGStylePatchGAN
+from .SRUNet import SRUNet
+from .degradation_network import DegradationNetwork
+from .VGGStylePatchGAN import VGGStylePatchGAN
 
 from ..utils.losses import perceptual_quality_loss, GDNLoss, perceptual_adversarial_loss
 
