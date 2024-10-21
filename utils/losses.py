@@ -75,6 +75,33 @@ import torch.nn.functional as F
 import piq  # For SSIM and PSNR
 
 
+def discriminator_loss(real_preds, fake_preds):
+    """
+    Calculates the adversarial loss for the discriminator in a GAN.
+
+    Parameters:
+    - real_preds: the discriminator's predictions on real images.
+    - fake_preds: the discriminator's predictions on fake (generated) images.
+
+    Returns:
+    - loss: the total adversarial loss for the discriminator.
+    """
+    # Loss for correctly identifying real images as real
+    real_loss = F.binary_cross_entropy_with_logits(
+        real_preds, torch.ones_like(real_preds)
+    )
+
+    # Loss for correctly identifying fake images as fake
+    fake_loss = F.binary_cross_entropy_with_logits(
+        fake_preds, torch.zeros_like(fake_preds)
+    )
+
+    # Average these two losses
+    loss = (real_loss + fake_loss) / 2
+
+    return loss
+
+
 def perceptual_adversarial_loss(
     real_images,
     generated_images,
