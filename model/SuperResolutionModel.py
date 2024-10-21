@@ -115,8 +115,25 @@ class SuperResolutionModel:
 
     def optimize_parameters(self, lr_images, hr_images, lambda_tv, angle, translation):
         # Normalize images before feeding to the networks
-        lr_images_normalized = (lr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
-        hr_images_normalized = (hr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
+
+        # Step 1: Check the min and max pixel values in the images
+        min_val_lr = torch.min(lr_images)
+        max_val_lr = torch.max(lr_images)
+
+        min_val_hr = torch.min(hr_images)
+        max_val_hr = torch.max(hr_images)
+
+        # Step 2: Normalize the images based on the min and max values (scaling to [-1, 1])
+        lr_images_normalized = (
+            2 * (lr_images - min_val_lr) / (max_val_lr - min_val_lr) - 1
+        )
+        hr_images_normalized = (
+            2 * (hr_images - min_val_hr) / (max_val_hr - min_val_hr) - 1
+        )
+
+        # Optional: Ensure that the normalized values are indeed within the range [-1, 1]
+        lr_images_normalized = torch.clamp(lr_images_normalized, min=-1.0, max=1.0)
+        hr_images_normalized = torch.clamp(hr_images_normalized, min=-1.0, max=1.0)
 
         # Assert that all pixel values are within the range [-1, 1]
         assert torch.all(lr_images_normalized >= -1) and torch.all(
