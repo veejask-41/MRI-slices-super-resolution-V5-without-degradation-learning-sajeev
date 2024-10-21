@@ -62,14 +62,9 @@ def main():
         print("Checkpoint 5")
 
         for i, data in enumerate(train_loader, 0):
-            print("Data structure:", data)
             print("Checkpoint 6")
-            lr_images, hr_images = data[0]
-            print("lr_images: ", lr_images.shape)
-            print("hr_images: ", hr_images.shape)
 
-            high_res_images = data[1]
-            low_res_images = data[0]
+            low_res_images, high_res_images = data[0][0], data[1][0]
 
             print(
                 f"Data batch {i}: HR shape {high_res_images.shape}, LR shape {low_res_images.shape}"
@@ -85,7 +80,7 @@ def main():
             total_iters += current_batch_size
             print("Checkpoint 7")
 
-            mri_vol = {"LR": lr_images[i], "HR": hr_images[i]}
+            mri_vol = {"LR": low_res_images[i], "HR": high_res_images[i]}
             print("Checkpoint 8, 1")
 
             model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
