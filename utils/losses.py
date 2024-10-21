@@ -88,6 +88,12 @@ def perceptual_adversarial_loss(
     """
     Combines adversarial loss with perceptual losses (L1, SSIM, PSNR) for MRI super-resolution tasks.
     """
+    # Clone tensors to prevent in-place modification issues
+    real_preds = real_preds.clone()
+    fake_preds = fake_preds.clone()
+    real_images = real_images.clone()
+    generated_images = generated_images.clone()
+
     # Adversarial Loss (BCE)
     adversarial_loss_real = F.binary_cross_entropy_with_logits(
         real_preds, torch.ones_like(real_preds)

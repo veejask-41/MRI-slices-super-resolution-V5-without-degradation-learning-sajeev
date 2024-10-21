@@ -209,7 +209,7 @@ class SuperResolutionModel:
         # Backpropagation and optimization for VGGStylePatchGAN
         self.optimizer_gan.zero_grad()
         print("Zero grad discriminator")
-        loss_gan.backward()
+        loss_gan.backward(retain_graph=True)
         self.optimizer_gan.step()
 
         print("Backprop VGG PatchGAN")
