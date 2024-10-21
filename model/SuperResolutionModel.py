@@ -207,9 +207,10 @@ class SuperResolutionModel:
         print("Backprop SR")
 
         # Backpropagation and optimization for VGGStylePatchGAN
-        # self.optimizer_gan.zero_grad()
-        # loss_gan.backward()
-        # self.optimizer_gan.step()
+        self.optimizer_gan.zero_grad()
+        print("Zero grad discriminator")
+        loss_gan.backward()
+        self.optimizer_gan.step()
 
         print("Backprop VGG PatchGAN")
 
