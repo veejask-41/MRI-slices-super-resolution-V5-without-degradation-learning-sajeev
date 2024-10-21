@@ -310,3 +310,20 @@ class SuperResolutionModel:
 
         print(f"Saved final SRUNet model to {sr_unet_file_path}")
         print(f"Saved final VGGStylePatchGAN model to {vgg_patch_gan_file_path}")
+
+    def save_checkpoint(self, checkpoint_dir, filename, epoch, total_iters):
+        """
+        Saves the partially trained SRUNet and VGGStylePatchGAN models to disk.
+        """
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        checkpoint_path_sr = os.path.join(checkpoint_dir, f"{filename[0]}.pth")
+        checkpoint_path_vgg_patch_gan = os.path.join(
+            checkpoint_dir, f"{filename[1]}.pth"
+        )
+
+        # Save the models
+        torch.save(self.sr_unet.state_dict(), checkpoint_path_sr)
+        torch.save(self.vgg_patch_gan.state_dict(), checkpoint_path_vgg_patch_gan)
+
+        print(f"Checkpoint saved to {checkpoint_path_sr}")
+        print(f"Checkpoint saved to {checkpoint_path_vgg_patch_gan}")

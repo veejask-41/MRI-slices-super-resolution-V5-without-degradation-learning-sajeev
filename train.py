@@ -114,6 +114,12 @@ def main():
                 save_checkpoint(
                     model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
                 )
+                model.save_checkpoint(
+                    opt.checkpoint_dir,
+                    ["sr epoch_%d" % epoch, "vgg_patchgan epoch_%d" % epoch],
+                    epoch,
+                    total_iters,
+                )
 
             print(
                 "End of epoch %d / %d \t Time Taken: %d sec"
