@@ -114,7 +114,8 @@ class SuperResolutionModel:
         # Store SR output for later visualization
         if "SR" not in self.current_visuals:
             self.current_visuals["SR"] = []
-        self.current_visuals["SR"].append(sr_output.squeeze().cpu().numpy())
+
+        self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
 
         # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
         blur_kernel = self.degradation_network(sr_output)
