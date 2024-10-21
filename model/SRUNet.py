@@ -27,10 +27,9 @@ class SRUNet(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        # Pass through frequency filter
         x_filtered = self.frequency_filter(x)
-        # Pass the filtered image through the UNet
-        return self.sigmoid(self.unet(x_filtered))
+        x_unet = self.unet(x_filtered)
+        return self.sigmoid(x_unet)
 
 
 # Define image size and instantiate model
