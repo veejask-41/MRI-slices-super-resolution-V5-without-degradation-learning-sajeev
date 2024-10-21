@@ -143,16 +143,25 @@ class SuperResolutionModel:
 
         # Step 4: Calculate losses
         # Loss for SRUNet
+        print(
+            f"Before loss_sr computation, sr_output range: {sr_output.min()} to {sr_output.max()}, hr_images range: {hr_images.min()} to {hr_images.max()}"
+        )
         loss_sr = perceptual_quality_loss(
             sr_output, hr_images, alpha=1.0, beta=1.0, gamma=1.0
         )
         print(f"Loss SR: {loss_sr}")
 
         # Feedback loss from DegradationNetwork - affects SRUNet
+        print(
+            f"Before loss_gdn computation, sr_output range: {sr_output.min()} to {sr_output.max()}, lr_images range: {lr_images.min()} to {lr_images.max()}, blur_kernel range: {blur_kernel.min()} to {blur_kernel.max()}"
+        )
         loss_gdn = GDNLoss(sr_output, lr_images, blur_kernel, lambda_tv)
         print(f"Loss GDN: {loss_gdn}")
 
         # Loss for VGGStylePatchGAN
+        print(
+            f"Before loss_gan computation, real_pred range: {real_pred.min()} to {real_pred.max()}, fake_pred range: {fake_pred.min()} to {fake_pred.max()}"
+        )
         loss_gan = perceptual_adversarial_loss(
             hr_images,
             sr_output,
