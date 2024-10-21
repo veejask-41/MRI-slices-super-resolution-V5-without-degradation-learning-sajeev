@@ -55,10 +55,6 @@ def main():
             epoch_iter += 1
             low_res_images, high_res_images = data[0][i], data[1][i]
 
-            print(
-                f"Data batch {i}: HR shape {high_res_images.shape}, LR shape {low_res_images.shape}"
-            )
-
             if high_res_images.shape[2:] != low_res_images.shape[2:]:
                 print(
                     f"Mismatched shapes in batch {i}: HR shape {high_res_images.shape}, LR shape {low_res_images.shape}"
