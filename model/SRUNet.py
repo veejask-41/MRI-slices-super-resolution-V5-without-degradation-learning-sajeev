@@ -21,9 +21,9 @@ class SRUNet(nn.Module):
         )
 
         # Optionally freeze encoder layers to prevent updating
-        if freeze_encoder:
-            for param in self.unet.encoder.parameters():
-                param.requires_grad = False
+        # if freeze_encoder:
+        #     for param in self.unet.encoder.parameters():
+        #         param.requires_grad = False
 
         self.sigmoid = nn.Sigmoid()
 
