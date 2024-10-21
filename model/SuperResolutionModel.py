@@ -108,32 +108,43 @@ class SuperResolutionModel:
         return self.lr_slices[index], self.hr_slices[index]
 
     def optimize_parameters(self, lr_images, hr_images, lambda_tv, angle, translation):
+        # Print input tensor shapes
+        print(f"Initial lr_images shape: {lr_images.shape}")
+        print(f"Initial hr_images shape: {hr_images.shape}")
+
         # Step 1: Forward pass through SRUNet
         sr_output = self.sr_unet(lr_images)
+        print(f"Shape of sr_output after SRUNet: {sr_output.shape}")
 
         # Store SR output for later visualization
         if "SR" not in self.current_visuals:
             self.current_visuals["SR"] = []
 
         self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
+        print(f"Stored sr_output shape in visuals: {sr_output.squeeze().shape}")
 
         # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
         blur_kernel = self.degradation_network(sr_output, angle, translation)
+        print(f"Shape of blur_kernel from DegradationNetwork: {blur_kernel.shape}")
 
         # Step 3: Prepare input for VGGStylePatchGAN
 
         # Forward pass through VGGStylePatchGAN
         real_pred = self.vgg_patch_gan(hr_images)
         fake_pred = self.vgg_patch_gan(sr_output)
+        print(f"real_pred shape: {real_pred.shape}")
+        print(f"fake_pred shape: {fake_pred.shape}")
 
         # Step 4: Calculate losses
         # Loss for SRUNet
         loss_sr = perceptual_quality_loss(
             sr_output, hr_images, alpha=1.0, beta=1.0, gamma=1.0
         )
+        print(f"Loss SR: {loss_sr}")
 
         # Feedback loss from DegradationNetwork - affects SRUNet
         loss_gdn = GDNLoss(sr_output, lr_images, blur_kernel, lambda_tv)
+        print(f"Loss GDN: {loss_gdn}")
 
         # Loss for VGGStylePatchGAN
         loss_gan = perceptual_adversarial_loss(
@@ -146,9 +157,11 @@ class SuperResolutionModel:
             gamma=1.0,
             delta=1.0,
         )
+        print(f"Loss GAN: {loss_gan}")
 
         # Total loss for SRUNet includes both perceptual and degradation feedback losses
         total_loss_sr = loss_sr + loss_gdn
+        print(f"Total Loss SR: {total_loss_sr}")
 
         # Step 5: Backpropagation and optimization for SRUNet
         self.optimizer_sr.zero_grad()
@@ -171,6 +184,7 @@ class SuperResolutionModel:
 
         # Store the current losses
         self.current_losses = loss_results
+        print(f"Current losses: {self.current_losses}")
 
     def get_current_losses(self):
         """
