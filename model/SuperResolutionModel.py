@@ -134,6 +134,12 @@ class SuperResolutionModel:
         fake_pred = self.vgg_patch_gan(sr_output)
         print(f"real_pred shape: {real_pred.shape}")
         print(f"fake_pred shape: {fake_pred.shape}")
+        print("real_pred: ", real_pred)
+        print("fake_pred: ", fake_pred)
+
+        # Add checks before loss calculation
+        if (real_pred < 0).any() or (fake_pred < 0).any():
+            print("Error: Prediction values are negative where expected non-negative.")
 
         # Step 4: Calculate losses
         # Loss for SRUNet
