@@ -50,7 +50,6 @@ def perceptual_quality_loss(output, target, alpha=1.0, beta=1.0, gamma=1.0):
     """
     # L1 Loss (Mean Absolute Error)
     l1_loss = F.l1_loss(output, target)
-    print(f"L1 Loss perceptual_quality_loss: {l1_loss.item()}")
 
     # Rescale from [-1, 1] to [0, 1]
     output = (output + 1) / 2
@@ -63,24 +62,16 @@ def perceptual_quality_loss(output, target, alpha=1.0, beta=1.0, gamma=1.0):
         (target >= 0) & (target <= 1)
     ), "Real image has pixel values out of the [0, 1] range."
 
-    print("Data for perceptual_quality_loss is in correct range")
-
     # SSIM Loss
     ssim_loss = 1 - piq.ssim(output, target, data_range=1.0)
-    print(f"SSIM Loss perceptual_quality_loss: {ssim_loss.item()}")
 
     # PSNR Loss (lower PSNR corresponds to higher loss)
     psnr_value = piq.psnr(output, target, data_range=1.0)
-    print(f"PSNR Value perceptual_quality_loss: {psnr_value.item()}")
 
     psnr_loss = -torch.log(psnr_value + 1e-7)  # Log transform for stability
-    print(f"PSNR Loss (Log-transformed) perceptual_quality_loss: {psnr_loss.item()}")
 
     # Weighted sum of losses
     combined_loss = (alpha * l1_loss) + (beta * ssim_loss) + (gamma * psnr_loss)
-    print(
-        f"Combined Perceptual Quality Loss perceptual_quality_loss: {combined_loss.item()}"
-    )
 
     return combined_loss
 
@@ -144,11 +135,9 @@ def perceptual_adversarial_loss(
         fake_preds, torch.zeros_like(fake_preds)
     )
     adversarial_loss = (adversarial_loss_real + adversarial_loss_fake) / 2
-    print(f"Adversarial Loss (real + fake): {adversarial_loss.item()}")
 
     # Perceptual L1 Loss
     l1_loss = F.l1_loss(generated_images, real_images)
-    print(f"L1 Loss perceptual_adversarial_loss: {l1_loss.item()}")
 
     # Rescale from [-1, 1] to [0, 1]
     generated_images = (generated_images + 1) / 2
@@ -161,20 +150,13 @@ def perceptual_adversarial_loss(
         (real_images >= 0) & (real_images <= 1)
     ), "Real image has pixel values out of the [0, 1] range."
 
-    print("Data for perceptual_adversarial_loss is in correct range")
-
     # SSIM Loss (1 - SSIM)
     ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=1.0)
-    print(f"SSIM Loss perceptual_adversarial_loss: {ssim_loss.item()}")
 
     # PSNR Loss
     psnr_value = piq.psnr(generated_images, real_images, data_range=1.0)
-    print(f"PSNR Value perceptual_adversarial_loss: {psnr_value.item()}")
 
     psnr_loss = -torch.log(psnr_value + 1e-7)
-    print(
-        f"PSNR Loss (Log-transformed) perceptual_adversarial_loss: {psnr_loss.item()}"
-    )
 
     # Weighted sum of all losses
     combined_loss = (
@@ -182,9 +164,6 @@ def perceptual_adversarial_loss(
         + (beta * l1_loss)
         + (gamma * ssim_loss)
         + (delta * psnr_loss)
-    )
-    print(
-        f"Combined Perceptual Adversarial Loss perceptual_adversarial_loss: {combined_loss.item()}"
     )
 
     return combined_loss
