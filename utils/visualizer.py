@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import torchvision.utils as vutils
+import torch
 
 
 class Visualizer:
