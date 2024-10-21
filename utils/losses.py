@@ -140,7 +140,7 @@ def perceptual_adversarial_loss(
     print(f"SSIM Loss: {ssim_loss.item()}")
 
     # PSNR Loss
-    psnr_value = piq.psnr(generated_images, real_images, data_range=1.0)
+    psnr_value = piq.psnr(generated_images, real_images, data_range=2.0)
     print(f"PSNR Value: {psnr_value.item()}")
 
     psnr_loss = -torch.log(psnr_value + 1e-7)
