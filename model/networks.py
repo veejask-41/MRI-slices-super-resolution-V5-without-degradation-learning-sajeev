@@ -15,17 +15,17 @@ class CustomMiniPatchGAN(nn.Module):
 
         # Intermediate layers including downsampling and normalization
         self.middle = nn.Sequential(
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=False),
             nn.Conv2d(
                 256, 128, kernel_size=3, stride=2, padding=1
             ),  # Downsampling to 4x4
             nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=False),
             nn.Conv2d(
                 128, 128, kernel_size=3, stride=1, padding=1
             ),  # Maintaining size 4x4
             nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=False),
         )
 
         # Final convolution layer to get to 1 output channel
