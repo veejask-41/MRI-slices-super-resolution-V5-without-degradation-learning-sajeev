@@ -97,8 +97,14 @@ def main():
                         "Saving the latest model (epoch %d, total_iters %d)"
                         % (epoch, total_iters)
                     )
-                    save_checkpoint(
-                        model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    # save_checkpoint(
+                    #     model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    # )
+                    model.save_checkpoint(
+                        opt.checkpoint_dir,
+                        ["sr epoch_%d" % epoch, "vgg_patchgan epoch_%d" % epoch],
+                        epoch,
+                        total_iters,
                     )
 
             # Display visuals at the specified frequency of the slices of a certain MRI Volume
