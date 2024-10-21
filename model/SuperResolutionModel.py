@@ -74,10 +74,18 @@ class SuperResolutionModel:
 
             # Convert slices to tensors and move to the appropriate device
             lr_tensor = (
-                torch.tensor(lr_slice, dtype=torch.float32).to(self.device).unsqueeze(0)
+                torch.tensor(lr_slice, dtype=torch.float32)
+                .clone()
+                .detach()
+                .to(self.device)
+                .unsqueeze(0)
             )  # Shape: (1, 1, 256, 256)
             hr_tensor = (
-                torch.tensor(hr_slice, dtype=torch.float32).to(self.device).unsqueeze(0)
+                torch.tensor(hr_slice, dtype=torch.float32)
+                .clone()
+                .detach()
+                .to(self.device)
+                .unsqueeze(0)
             )  # Shape: (1, 1, 256, 256)
 
             # Append to the slice list
