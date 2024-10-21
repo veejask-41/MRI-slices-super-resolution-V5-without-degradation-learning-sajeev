@@ -4,7 +4,7 @@ from torch import nn
 from torch.optim import Optimizer
 
 
-def save_checkpoint(model, optimizer, checkpoint_dir, filename, epoch, total_iters):
+def save_checkpoint(model, checkpoint_dir, filename, epoch, total_iters):
     """
     Saves the current state of the model and optimizer to a file.
 
@@ -18,10 +18,18 @@ def save_checkpoint(model, optimizer, checkpoint_dir, filename, epoch, total_ite
     """
     os.makedirs(checkpoint_dir, exist_ok=True)
     checkpoint_path = os.path.join(checkpoint_dir, f"{filename}.pth")
+    # torch.save(
+    #     {
+    #         "model_state_dict": model.state_dict(),
+    #         "optimizer_state_dict": optimizer.state_dict(),
+    #         "epoch": epoch,
+    #         "total_iters": total_iters,
+    #     },
+    #     checkpoint_path,
+    # )
     torch.save(
         {
             "model_state_dict": model.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
             "epoch": epoch,
             "total_iters": total_iters,
         },
