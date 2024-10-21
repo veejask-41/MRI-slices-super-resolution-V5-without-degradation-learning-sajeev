@@ -52,12 +52,25 @@ def perceptual_quality_loss(output, target, alpha=1.0, beta=1.0, gamma=1.0):
     l1_loss = F.l1_loss(output, target)
     print(f"L1 Loss perceptual_quality_loss: {l1_loss.item()}")
 
+    # Rescale from [-1, 1] to [0, 1]
+    output = (output + 1) / 2
+    target = (target + 1) / 2
+
+    assert torch.all(
+        (output >= 0) & (output <= 1)
+    ), "Generated image has pixel values out of the [0, 1] range."
+    assert torch.all(
+        (target >= 0) & (target <= 1)
+    ), "Real image has pixel values out of the [0, 1] range."
+
+    print("Data for perceptual_quality_loss is in correct range")
+
     # SSIM Loss
-    ssim_loss = 1 - piq.ssim(output, target, data_range=2.0)
+    ssim_loss = 1 - piq.ssim(output, target, data_range=1.0)
     print(f"SSIM Loss perceptual_quality_loss: {ssim_loss.item()}")
 
     # PSNR Loss (lower PSNR corresponds to higher loss)
-    psnr_value = piq.psnr(output, target, data_range=2.0)
+    psnr_value = piq.psnr(output, target, data_range=1.0)
     print(f"PSNR Value perceptual_quality_loss: {psnr_value.item()}")
 
     psnr_loss = -torch.log(psnr_value + 1e-7)  # Log transform for stability
@@ -148,7 +161,7 @@ def perceptual_adversarial_loss(
         (real_images >= 0) & (real_images <= 1)
     ), "Real image has pixel values out of the [0, 1] range."
 
-    print("Data is in correct range")
+    print("Data for perceptual_adversarial_loss is in correct range")
 
     # SSIM Loss (1 - SSIM)
     ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=1.0)
