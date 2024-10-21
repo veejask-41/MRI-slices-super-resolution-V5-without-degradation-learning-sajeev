@@ -126,39 +126,62 @@ class SuperResolutionModel:
         # Step 2: Normalize the images based on the min and max values (scaling to [-1, 1])
         # Handle case where min and max are the same (constant image)
         if max_val_lr == min_val_lr:
-            print("Warning: LR Image has constant pixel values.")
-            lr_images_normalized = torch.zeros_like(lr_images)  # Assign 0
+            # Step 1: Standardize the image (mean 0, variance 1)
+            mean_lr = torch.mean(lr_images)
+            std_lr = torch.std(lr_images)
+
+            # Ensure std is not zero to avoid division by zero
+            if std_lr == 0:
+                lr_images_normalized = torch.zeros_like(
+                    lr_images
+                )  # Handle constant image case
+            else:
+                # Standardize to mean 0, variance 1
+                lr_images_standardized = (lr_images - mean_lr) / std_lr
+
+                # Step 2: Scale to range [-1, 1]
+                # Find the max absolute value to scale to [-1, 1]
+                max_val = torch.max(torch.abs(lr_images_standardized))
+                lr_images_normalized = lr_images_standardized / max_val
+
+            # Clamp values to ensure they are exactly within [-1, 1] if any values drift
+            lr_images_normalized = torch.clamp(lr_images_normalized, min=-1.0, max=1.0)
+
         else:
             lr_images_normalized = (
                 2 * (lr_images - min_val_lr) / (max_val_lr - min_val_lr) - 1
             )
 
         if max_val_hr == min_val_hr:
-            hr_images_normalized = torch.zeros_like(hr_images)  # Assign 0
+            # Step 1: Standardize the image (mean 0, variance 1)
+            mean_hr = torch.mean(hr_images)
+            std_hr = torch.std(hr_images)
+
+            # Ensure std is not zero to avoid division by zero
+            if std_hr == 0:
+                hr_images_normalized = torch.zeros_like(
+                    hr_images
+                )  # Handle constant image case
+            else:
+                # Standardize to mean 0, variance 1
+                hr_images_standardized = (hr_images - mean_hr) / std_hr
+
+                # Step 2: Scale to range [-1, 1]
+                # Find the max absolute value to scale to [-1, 1]
+                max_val = torch.max(torch.abs(hr_images_standardized))
+                hr_images_normalized = hr_images_standardized / max_val
+
+            # Clamp values to ensure they are exactly within [-1, 1] if any values drift
+            hr_images_normalized = torch.clamp(hr_images_normalized, min=-1.0, max=1.0)
+
         else:
             hr_images_normalized = (
                 2 * (hr_images - min_val_hr) / (max_val_hr - min_val_hr) - 1
             )
 
-        # Debugging: Check if any values go outside the expected range after normalization
-        print(
-            f"After normalization, LR Image - Min: {torch.min(lr_images_normalized).item()}, Max: {torch.max(lr_images_normalized).item()}"
-        )
-        print(
-            f"After normalization, HR Image - Min: {torch.min(hr_images_normalized).item()}, Max: {torch.max(hr_images_normalized).item()}"
-        )
-
         # Ensure that the normalized values are indeed within the range [-1, 1]
         lr_images_normalized = torch.clamp(lr_images_normalized, min=-1.0, max=1.0)
         hr_images_normalized = torch.clamp(hr_images_normalized, min=-1.0, max=1.0)
-
-        # Debugging: Check again after clamping
-        print(
-            f"After clamping, LR Image - Min: {torch.min(lr_images_normalized).item()}, Max: {torch.max(lr_images_normalized).item()}"
-        )
-        print(
-            f"After clamping, HR Image - Min: {torch.min(hr_images_normalized).item()}, Max: {torch.max(hr_images_normalized).item()}"
-        )
 
         # Step 3: Re-run the assertion to verify
         assert torch.all(lr_images_normalized >= -1) and torch.all(
@@ -167,10 +190,6 @@ class SuperResolutionModel:
         assert torch.all(hr_images_normalized >= -1) and torch.all(
             hr_images_normalized <= 1
         ), "hr_images_normalized has values outside [-1, 1]"
-
-        print(
-            "All pixel values in lr_images_normalized and hr_images_normalized are within the range [-1, 1]"
-        )
 
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
