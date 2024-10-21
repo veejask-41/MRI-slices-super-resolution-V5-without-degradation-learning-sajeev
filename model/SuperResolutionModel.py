@@ -54,10 +54,10 @@ class SuperResolutionModel:
 
         # Ensure data has the right structure and load LR and HR volumes
         lr_volume = (
-            data["LR"].detach().to(self.device).unsqueeze(0).float()
+            data["LR"].detach().to(self.device).squeeze(0)
         )  # Expected shape: (150, 256, 256)
         hr_volume = (
-            data["HR"].detach().to(self.device).unsqueeze(0).float()
+            data["HR"].detach().to(self.device).squeeze(0)
         )  # Expected shape: (150, 256, 256)
 
         # Check the dimensions of the input data
