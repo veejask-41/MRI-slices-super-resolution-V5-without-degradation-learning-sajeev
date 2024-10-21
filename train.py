@@ -15,14 +15,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    # Set manual seed for reproducibility
-    # torch.manual_seed(999)
-    # if torch.cuda.is_available():
-    #     torch.cuda.manual_seed_all(999)
-    print("Checkpoint 1")
     # Parse options
     opt = TrainOptions().parse()
-    print("Checkpoint 2")
     opt.device = str(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
     # Create a model based on the options
@@ -42,7 +36,6 @@ def main():
     # )
     dataset_size = len(train_dataset)
     print(f"The number of training images = {dataset_size}")
-    print("Checkpoint 3")
 
     # Create visualizer
     visualizer = Visualizer(opt)
@@ -52,18 +45,14 @@ def main():
         load_checkpoint(model, opt.checkpoint_dir, opt.which_epoch, str(device))
         print(f"Loading checkpoint on device: {device}")
 
-    print("Checkpoint 4")
-
     # Training loop
     total_iters = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):
+        print("Epoch No: ", epoch)
         epoch_start_time = time.time()
         epoch_iter = 0
-        print("Checkpoint 5")
 
         for i, data in enumerate(train_loader, 0):
-            print("Checkpoint 6")
-
             low_res_images, high_res_images = data[0][i], data[1][i]
 
             print(
@@ -78,27 +67,18 @@ def main():
 
             current_batch_size = len(data[0])
             total_iters += current_batch_size
-            print("Checkpoint 7")
 
             mri_vol = {"LR": low_res_images, "HR": high_res_images}
-            print("Checkpoint 8, 1")
 
             model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
-            print("Checkpoint 8, 2")
 
             # Process each slice in the current volume
             num_slices = len(model.lr_slices)
             for slice_index in range(num_slices):
                 lr_slice, hr_slice = model.get_slice_pair(slice_index)
-                print("Checkpoint 9")
 
                 angle = 45  # degrees
                 translation = (10, 5)  # x and y translation in pixels
-
-                # Check for any NaN or inf values in lr_images
-                if torch.isnan(lr_slice).any() or torch.isinf(hr_slice).any():
-                    print("Skipping lr_images due to NaN or inf values")
-                    continue
 
                 # Forward, backward pass, and optimize with additional parameters
                 model.optimize_parameters(
@@ -109,7 +89,7 @@ def main():
                     translation=translation,
                 )
 
-                print("Checkpoint 10")
+                print("Checkpoint 1")
 
                 # Print loss information at the specified frequency
                 # if total_iters % opt.print_freq == 0:
