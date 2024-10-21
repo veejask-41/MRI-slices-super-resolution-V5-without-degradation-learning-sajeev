@@ -24,11 +24,13 @@ class SRUNet(nn.Module):
             for param in self.unet.encoder.parameters():
                 param.requires_grad = False
 
+        self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         # Pass through frequency filter
         x_filtered = self.frequency_filter(x)
         # Pass the filtered image through the UNet
-        return self.unet(x_filtered)
+        return self.sigmoid(self.unet(x_filtered))
 
 
 # Define image size and instantiate model
