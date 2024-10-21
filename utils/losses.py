@@ -139,6 +139,15 @@ def perceptual_adversarial_loss(
     generated_images = (generated_images + 1) / 2
     real_images = (real_images + 1) / 2
 
+    assert torch.all(
+        (generated_images >= 0) & (generated_images <= 1)
+    ), "Generated image has pixel values out of the [0, 1] range."
+    assert torch.all(
+        (real_images >= 0) & (real_images <= 1)
+    ), "Real image has pixel values out of the [0, 1] range."
+
+    print("Data is in correct range")
+
     # SSIM Loss (1 - SSIM)
     ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=1.0)
     print(f"SSIM Loss: {ssim_loss.item()}")
