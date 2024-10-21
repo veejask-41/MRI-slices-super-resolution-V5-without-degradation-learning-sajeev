@@ -204,6 +204,8 @@ class SuperResolutionModel:
         print("Backprop SR")
 
         # Backpropagation and optimization for VGGStylePatchGAN
+        torch.autograd.set_detect_anomaly(True)
+
         self.optimizer_gan.zero_grad()
         print("Zero grad discriminator")
         loss_gan.backward()
