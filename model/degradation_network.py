@@ -15,19 +15,21 @@ class DegradationNetwork(nn.Module):
         self.fwhm = fwhm
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.low_pass_filter = self.create_sinc_gaussian_filter()
+        print(f"Low-pass filter shape: {self.low_pass_filter.shape}")  # Debug
 
     def forward(self, x, angle, translation):
-        # Apply rigid transform
+        print(f"Input shape: {x.shape}")  # Debug
         transformed_img_tensor = self.apply_rigid_transform(x, angle, translation)
+        print(f"Transformed image shape: {transformed_img_tensor.shape}")  # Debug
 
-        # Fourier Transform to Frequency Domain
         freq_domain = torch.fft.fftshift(torch.fft.fft2(transformed_img_tensor))
+        print(f"Frequency domain shape: {freq_domain.shape}")  # Debug
 
-        # Apply combined Sinc and Gaussian low-pass filter
         filtered_freq = freq_domain * self.low_pass_filter
+        print(f"Filtered frequency shape: {filtered_freq.shape}")  # Debug
 
-        # Inverse Fourier Transform to return to spatial domain
         degraded_image = torch.fft.ifft2(torch.fft.ifftshift(filtered_freq)).real
+        print(f"Degraded image shape: {degraded_image.shape}")  # Debug
         return degraded_image
 
     def create_sinc_gaussian_filter(self):
@@ -41,46 +43,49 @@ class DegradationNetwork(nn.Module):
             torch.sin(radius / self.slice_thickness_ratio)
             / (radius / self.slice_thickness_ratio),
         )
-
         gaussian_filter = torch.exp(-0.5 * (radius / self.fwhm) ** 2)
         combined_filter = sinc_filter * gaussian_filter
         return combined_filter
 
     def apply_rigid_transform(self, image, angle, translation):
-        # Convert image to tensor
         if not torch.is_tensor(image):
             image = TF.to_tensor(image)
+        image = image.unsqueeze(0)  # Adding batch dimension for processing
+        print(
+            f"Image tensor shape after adding batch dimension: {image.shape}"
+        )  # Debug
 
-        image = image.unsqueeze(0)
-
-        # Convert angle from degrees to radians
         angle_rad = torch.tensor(angle * (math.pi / 180), device=self.device)
         cos_a, sin_a = torch.cos(angle_rad), torch.sin(angle_rad)
         tx, ty = translation
 
-        # Define transformation matrix for rotation and translation
         affine_matrix = torch.tensor(
             [[cos_a, -sin_a, tx], [sin_a, cos_a, ty]], device=self.device
-        )
+        ).unsqueeze(
+            0
+        )  # Batch dimension for affine_grid
+        print(f"Affine matrix: {affine_matrix}")  # Debug
 
-        # Create affine grid and apply the affine transformation using torch.nn.functional
-        grid = F.affine_grid(affine_matrix[None], image.size(), align_corners=False)
+        grid = F.affine_grid(affine_matrix, image.size(), align_corners=False)
         transformed_image = F.grid_sample(image, grid, align_corners=False)
+        print(
+            f"Transformed image shape after grid_sample: {transformed_image.shape}"
+        )  # Debug
+
         return transformed_image.squeeze(0)
 
 
-# Parameters
-img_size = 256
-input_image = torch.rand(
-    1,
-    img_size,
-    img_size,
-    device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-)
+# Example use
+# img_size = 256
+# input_image = torch.rand(
+#     1,
+#     img_size,
+#     img_size,
+#     device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+# )
 
-# Initialize DegradationNetwork and apply degradation
-degradation_net = DegradationNetwork(image_size=img_size)
-angle = 30  # Rotation angle in degrees
-translation = (0.1, 0.1)  # Translation parameters as a fraction of image dimensions
-degraded_image = degradation_net(input_image, angle, translation)
-print(degraded_image.shape)
+# degradation_net = DegradationNetwork(image_size=img_size)
+# angle = 30  # Rotation angle in degrees
+# translation = (0.1, 0.1)  # Translation parameters
+# degraded_image = degradation_net(input_image, angle, translation)
+# print(f"Final degraded image shape: {degraded_image.shape}")
