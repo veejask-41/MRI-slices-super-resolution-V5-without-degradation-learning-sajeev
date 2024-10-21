@@ -22,12 +22,11 @@ class SuperResolutionModel:
         )
 
         # Initialize the models based on the configuration
-        self.sr_unet = SRUNet(
-            image_size=opt.image_size,
-            in_channels=opt.in_channels,
-            out_channels=opt.out_channels,
-            freeze_encoder=opt.freeze_encoder,
-        ).to(
+        # image_size=opt.image_size,
+        # in_channels=opt.in_channels,
+        # out_channels=opt.out_channels,
+        # freeze_encoder=opt.freeze_encoder,
+        self.sr_unet = SRUNet(n_channels=1, n_classes=1).to(
             self.device
         )  # Move SRUNet model to the correct device
 
