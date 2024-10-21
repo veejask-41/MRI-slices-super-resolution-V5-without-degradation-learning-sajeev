@@ -115,10 +115,8 @@ class SuperResolutionModel:
 
     def optimize_parameters(self, lr_images, hr_images, lambda_tv, angle, translation):
         # Normalize images before feeding to the networks
-        lr_images_normalized = (
-            lr_images / 255.0
-        ) * 2 - 1  # normalization: scale to [-1, 1]
-        hr_images_normalized = (hr_images / 255.0) * 2 - 1
+        lr_images_normalized = (lr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
+        hr_images_normalized = (hr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
 
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
@@ -134,7 +132,7 @@ class SuperResolutionModel:
             sr_output,
             real_pred,
             fake_pred,
-            alpha=1.0,  # Coefficients for perceptual, adversarial, and other losses
+            alpha=1.0,
             beta=1.0,
             gamma=1.0,
             delta=1.0,
@@ -143,7 +141,7 @@ class SuperResolutionModel:
         loss_sr = perceptual_quality_loss(
             sr_output,
             hr_images_normalized,
-            alpha=1.0,  # Coefficients for quality loss terms
+            alpha=1.0,
             beta=1.0,
             gamma=1.0,
         )
