@@ -120,6 +120,8 @@ class SRUNet(nn.Module):
         self.up3 = Up(192, 64, bilinear)
         self.outc = OutConv(64, n_classes)
 
+        self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         x1 = self.inc(x)
         x2 = self.down1(x1)
@@ -129,7 +131,9 @@ class SRUNet(nn.Module):
         x = self.up2(x, x2)
         x = self.up3(x, x1)
         logits = self.outc(x)
-        return logits
+        out = self.sigmoid(logits)
+
+        return out
 
 
 # Define image size and instantiate model
