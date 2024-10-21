@@ -38,7 +38,9 @@ class SuperResolutionModel:
 
         # Optimizers for SRUNet and VGGStylePatchGAN only, since DegradationNetwork is not trained
         self.optimizer_sr = torch.optim.Adam(self.sr_unet.parameters(), lr=opt.lr)
-        self.optimizer_gan = torch.optim.Adam(self.sr_unet.parameters(), lr=opt.lr)
+        self.optimizer_gan = torch.optim.Adam(
+            self.vgg_patch_gan.parameters(), lr=opt.lr
+        )
 
         # Placeholder for storing input data
         self.lr_slices = []
@@ -116,7 +118,8 @@ class SuperResolutionModel:
         print(f"Initial hr_images shape: {hr_images.shape}")
 
         # Step 1: Forward pass through SRUNet
-        sr_output = self.sr_unet(lr_images)
+        # sr_output = self.sr_unet(lr_images)
+        sr_output = torch.rand(1, 1, 256, 256)
         print(f"Shape of sr_output after SRUNet: {sr_output.shape}")
 
         # Store SR output for later visualization
