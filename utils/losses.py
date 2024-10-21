@@ -135,15 +135,16 @@ def perceptual_adversarial_loss(
     l1_loss = F.l1_loss(generated_images, real_images)
     print(f"L1 Loss: {l1_loss.item()}")
 
-    print("Generated Image: ", generated_images.shape)
-    print("Real Image: ", real_images.shape)
+    # Rescale from [-1, 1] to [0, 1]
+    generated_images = (generated_images + 1) / 2
+    real_images = (real_images + 1) / 2
 
     # SSIM Loss (1 - SSIM)
-    ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=2.0)
+    ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=1.0)
     print(f"SSIM Loss: {ssim_loss.item()}")
 
     # PSNR Loss
-    psnr_value = piq.psnr(generated_images, real_images, data_range=2.0)
+    psnr_value = piq.psnr(generated_images, real_images, data_range=1.0)
     print(f"PSNR Value: {psnr_value.item()}")
 
     psnr_loss = -torch.log(psnr_value + 1e-7)
