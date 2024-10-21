@@ -323,8 +323,24 @@ class SuperResolutionModel:
         )
 
         # Save the models
-        torch.save(self.sr_unet.state_dict(), checkpoint_path_sr)
-        torch.save(self.vgg_patch_gan.state_dict(), checkpoint_path_vgg_patch_gan)
+        torch.save(
+            {
+                "model_state_dict": self.sr_unet.state_dict(),
+                "epoch": epoch,
+                "total_iters": total_iters,
+            },
+            checkpoint_path_sr,
+        )
+        torch.save(
+            {
+                "model_state_dict": self.vgg_patch_gan.state_dict(),
+                "epoch": epoch,
+                "total_iters": total_iters,
+            },
+            checkpoint_path_vgg_patch_gan,
+        )
+        # torch.save(self.sr_unet.state_dict(), checkpoint_path_sr)
+        # torch.save(self.vgg_patch_gan.state_dict(), checkpoint_path_vgg_patch_gan)
 
         print(f"Checkpoint saved to {checkpoint_path_sr}")
         print(f"Checkpoint saved to {checkpoint_path_vgg_patch_gan}")
