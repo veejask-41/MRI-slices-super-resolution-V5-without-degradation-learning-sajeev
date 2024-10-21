@@ -147,17 +147,14 @@ class SuperResolutionModel:
             f"Before loss_sr computation, sr_output range: {sr_output.min()} to {sr_output.max()}, hr_images range: {hr_images.min()} to {hr_images.max()}"
         )
 
-        # Get the min and max values from hr_images
+        hr_images = hr_images.clone()
         hr_min = hr_images.min()
         hr_max = hr_images.max()
 
-        # Avoid division by zero in case hr_max == hr_min
         if hr_max > hr_min:
             hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
         else:
-            hr_images_normalized = (
-                hr_images - hr_min
-            )  # This will result in all zeros if hr_max == hr_min
+            hr_images_normalized = hr_images - hr_min  # Avoid in-place operation
 
         # Print to verify normalization
         print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
@@ -209,7 +206,7 @@ class SuperResolutionModel:
         # Backpropagation and optimization for VGGStylePatchGAN
         self.optimizer_gan.zero_grad()
         print("Zero grad discriminator")
-        loss_gan.backward(retain_graph=True)
+        loss_gan.backward()
         self.optimizer_gan.step()
 
         print("Backprop VGG PatchGAN")
