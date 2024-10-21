@@ -38,9 +38,7 @@ class SuperResolutionModel:
 
         # Optimizers for SRUNet and VGGStylePatchGAN only, since DegradationNetwork is not trained
         self.optimizer_sr = torch.optim.Adam(self.sr_unet.parameters(), lr=opt.lr)
-        self.optimizer_gan = torch.optim.Adam(
-            self.vgg_patch_gan.parameters(), lr=opt.lr
-        )
+        self.optimizer_gan = torch.optim.Adam(self.sr_unet.parameters(), lr=opt.lr)
 
         # Placeholder for storing input data
         self.lr_slices = []
@@ -184,19 +182,16 @@ class SuperResolutionModel:
             f"Before loss_gan computation, real_pred range: {real_pred.min()} to {real_pred.max()}, fake_pred range: {fake_pred.min()} to {fake_pred.max()}"
         )
         torch.autograd.set_detect_anomaly(True)
-        # loss_gan = perceptual_adversarial_loss(
-        #     hr_images_normalized,
-        #     sr_output,
-        #     real_pred,
-        #     fake_pred,
-        #     alpha=1.0,
-        #     beta=1.0,
-        #     gamma=1.0,
-        #     delta=1.0,
-        # )
-
-        loss_gan = discriminator_loss(real_preds=real_pred, fake_preds=fake_pred)
-
+        loss_gan = perceptual_adversarial_loss(
+            hr_images_normalized,
+            sr_output,
+            real_pred,
+            fake_pred,
+            alpha=1.0,
+            beta=1.0,
+            gamma=1.0,
+            delta=1.0,
+        )
         print(f"Loss GAN: {loss_gan}")
 
         # Total loss for SRUNet includes both perceptual and degradation feedback losses
