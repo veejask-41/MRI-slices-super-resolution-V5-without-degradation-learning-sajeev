@@ -204,10 +204,14 @@ class SuperResolutionModel:
         )  # Retain graph for subsequent backpropagation
         self.optimizer_sr.step()
 
+        print("Backprop SR")
+
         # Backpropagation and optimization for VGGStylePatchGAN
         self.optimizer_gan.zero_grad()
         loss_gan.backward()
         self.optimizer_gan.step()
+
+        print("Backprop VGG PatchGAN")
 
         # Calculate losses
         loss_results = {
