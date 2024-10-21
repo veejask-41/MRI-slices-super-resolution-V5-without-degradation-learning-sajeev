@@ -24,7 +24,7 @@ class SRUNet(nn.Module):
             for param in self.unet.encoder.parameters():
                 param.requires_grad = False
 
-        self.sigmoid = nn.Sigmoid(in_place=False)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         # Pass through frequency filter
