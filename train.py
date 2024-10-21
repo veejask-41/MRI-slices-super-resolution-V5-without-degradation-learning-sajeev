@@ -81,10 +81,11 @@ def main():
             total_iters += current_batch_size
             print("Checkpoint 7")
 
-            mri_vol = {"LR": low_res_images, "HR": high_res_images}
+            mri_vol = {"LR": low_res_images[i], "HR": high_res_images[i]}
+            print("Checkpoint 8, 1")
 
             model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
-            print("Checkpoint 8")
+            print("Checkpoint 8, 2")
 
             # Process each slice in the current volume
             num_slices = len(model.lr_slices)
