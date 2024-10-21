@@ -29,7 +29,7 @@ class VGGStylePatchGAN(nn.Module):
 
 
 # Example usage:
-discriminator = VGGStylePatchGAN(patch_size=70)
-input_image = torch.randn(1, 1, 256, 256)  # Example input
-output = discriminator(input_image)
-print(output)  # Should reflect patch-based output
+# discriminator = VGGStylePatchGAN(patch_size=70)
+# input_image = torch.randn(1, 1, 256, 256)  # Example input
+# output = discriminator(input_image)
+# print(output)  # Should reflect patch-based output

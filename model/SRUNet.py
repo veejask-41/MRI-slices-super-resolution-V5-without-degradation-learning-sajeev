@@ -24,7 +24,7 @@ class SRUNet(nn.Module):
             for param in self.unet.encoder.parameters():
                 param.requires_grad = False
 
-        self.sigmoid = nn.Sigmoid()
+        self.sigmoid = nn.Sigmoid(in_place=False)
 
     def forward(self, x):
         # Pass through frequency filter
@@ -34,16 +34,16 @@ class SRUNet(nn.Module):
 
 
 # Define image size and instantiate model
-image_size = 256
-model = SRUNet(
-    image_size=image_size, in_channels=1, out_channels=1, freeze_encoder=True
-)
+# image_size = 256
+# model = SRUNet(
+#     image_size=image_size, in_channels=1, out_channels=1, freeze_encoder=True
+# )
 
-# Input image
-x = torch.randn(
-    1, 1, image_size, image_size
-)  # Example input with batch size 1, grayscale
+# # Input image
+# x = torch.randn(
+#     1, 1, image_size, image_size
+# )  # Example input with batch size 1, grayscale
 
-# Forward pass
-output = model(x)
-print(output.shape)
+# # Forward pass
+# output = model(x)
+# print(output.shape)

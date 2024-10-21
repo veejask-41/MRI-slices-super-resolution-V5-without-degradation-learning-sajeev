@@ -15,6 +15,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
+    torch.autograd.set_detect_anomaly(True)
+
     # Set manual seed for reproducibility
     # torch.manual_seed(999)
     # if torch.cuda.is_available():
