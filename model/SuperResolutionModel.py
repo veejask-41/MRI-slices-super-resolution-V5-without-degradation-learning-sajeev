@@ -119,7 +119,7 @@ class SuperResolutionModel:
 
         # Step 1: Forward pass through SRUNet
         # sr_output = self.sr_unet(lr_images)
-        sr_output = torch.rand(1, 1, 256, 256).to(self.device)
+        sr_output = torch.rand(1, 1, 256, 256, requires_grad=True).to(self.device)
         print(f"Shape of sr_output after SRUNet: {sr_output.shape}")
 
         # Store SR output for later visualization
