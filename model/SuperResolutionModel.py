@@ -199,14 +199,16 @@ class SuperResolutionModel:
 
         # Step 5: Backpropagation and optimization for SRUNet
         self.optimizer_sr.zero_grad()
-        total_loss_sr.backward()  # Retain graph for subsequent backpropagation
+        total_loss_sr.backward(
+            retain_graph=True
+        )  # Retain graph for subsequent backpropagation
         self.optimizer_sr.step()
 
         print("Backprop SR")
 
         # Backpropagation and optimization for VGGStylePatchGAN
         self.optimizer_gan.zero_grad()
-        loss_gan.backward(retain_graph=True)
+        loss_gan.backward()
         self.optimizer_gan.step()
 
         print("Backprop VGG PatchGAN")
