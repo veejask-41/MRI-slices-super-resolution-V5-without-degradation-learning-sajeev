@@ -59,20 +59,30 @@ class DegradationNetwork(nn.Module):
         cos_a, sin_a = torch.cos(angle_rad), torch.sin(angle_rad)
         tx, ty = translation
 
+        # Define transformation matrix for rotation and translation (2D transformation matrix)
         affine_matrix = torch.tensor(
-            [[cos_a, -sin_a, tx], [sin_a, cos_a, ty]], device=self.device
-        ).unsqueeze(
-            0
-        )  # Batch dimension for affine_grid
+            [
+                [cos_a, -sin_a, 0, tx],
+                [sin_a, cos_a, 0, ty],
+                [0, 0, 1, 0],  # Extend to 3x4 matrix
+            ],
+            device=self.device,
+        )
+
         print(f"Affine matrix: {affine_matrix}")  # Debug
 
-        grid = F.affine_grid(affine_matrix, image.size(), align_corners=False)
+        # Create affine grid and apply the affine transformation using torch.nn.functional
+        grid = F.affine_grid(
+            affine_matrix.unsqueeze(0), image.size(), align_corners=False
+        )  # Note the unsqueeze to add batch dimension
         transformed_image = F.grid_sample(image, grid, align_corners=False)
         print(
             f"Transformed image shape after grid_sample: {transformed_image.shape}"
         )  # Debug
 
-        return transformed_image.squeeze(0)
+        return transformed_image.squeeze(
+            0
+        )  # Remove batch dimension after transformation
 
 
 # Example use
