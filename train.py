@@ -95,6 +95,11 @@ def main():
                 angle = 45  # degrees
                 translation = (10, 5)  # x and y translation in pixels
 
+                # Check for any NaN or inf values in lr_images
+                if torch.isnan(lr_slice).any() or torch.isinf(hr_slice).any():
+                    print("Skipping lr_images due to NaN or inf values")
+                    continue
+
                 # Forward, backward pass, and optimize with additional parameters
                 model.optimize_parameters(
                     lr_images=lr_slice,

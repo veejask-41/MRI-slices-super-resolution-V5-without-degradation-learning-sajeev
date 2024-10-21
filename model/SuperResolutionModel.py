@@ -123,10 +123,6 @@ class SuperResolutionModel:
         min_val_hr = torch.min(hr_images)
         max_val_hr = torch.max(hr_images)
 
-        # Debugging: Print the min and max values of the original images
-        print(f"LR Image - Min: {min_val_lr.item()}, Max: {max_val_lr.item()}")
-        print(f"HR Image - Min: {min_val_hr.item()}, Max: {max_val_hr.item()}")
-
         # Step 2: Normalize the images based on the min and max values (scaling to [-1, 1])
         lr_images_normalized = (
             2 * (lr_images - min_val_lr) / (max_val_lr - min_val_lr) - 1
@@ -135,37 +131,17 @@ class SuperResolutionModel:
             2 * (hr_images - min_val_hr) / (max_val_hr - min_val_hr) - 1
         )
 
-        # Debugging: Check if any values go outside the expected range after normalization
-        print(
-            f"After normalization, LR Image - Min: {torch.min(lr_images_normalized).item()}, Max: {torch.max(lr_images_normalized).item()}"
-        )
-        print(
-            f"After normalization, HR Image - Min: {torch.min(hr_images_normalized).item()}, Max: {torch.max(hr_images_normalized).item()}"
-        )
-
         # Ensure that the normalized values are indeed within the range [-1, 1]
         lr_images_normalized = torch.clamp(lr_images_normalized, min=-1.0, max=1.0)
         hr_images_normalized = torch.clamp(hr_images_normalized, min=-1.0, max=1.0)
 
-        # Debugging: Check again after clamping
-        print(
-            f"After clamping, LR Image - Min: {torch.min(lr_images_normalized).item()}, Max: {torch.max(lr_images_normalized).item()}"
-        )
-        print(
-            f"After clamping, HR Image - Min: {torch.min(hr_images_normalized).item()}, Max: {torch.max(hr_images_normalized).item()}"
-        )
-
-        # Step 3: Re-run the assertion to verify
+        # Assert that all pixel values are within the range [-1, 1]
         assert torch.all(lr_images_normalized >= -1) and torch.all(
             lr_images_normalized <= 1
         ), "lr_images_normalized has values outside [-1, 1]"
         assert torch.all(hr_images_normalized >= -1) and torch.all(
             hr_images_normalized <= 1
         ), "hr_images_normalized has values outside [-1, 1]"
-
-        print(
-            "All pixel values in lr_images_normalized and hr_images_normalized are within the range [-1, 1]"
-        )
 
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
