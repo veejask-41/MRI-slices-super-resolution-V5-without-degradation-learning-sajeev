@@ -178,6 +178,7 @@ class SuperResolutionModel:
         print(
             f"Before loss_gan computation, real_pred range: {real_pred.min()} to {real_pred.max()}, fake_pred range: {fake_pred.min()} to {fake_pred.max()}"
         )
+        torch.autograd.set_detect_anomaly(True)
         loss_gan = perceptual_adversarial_loss(
             hr_images_normalized,
             sr_output,

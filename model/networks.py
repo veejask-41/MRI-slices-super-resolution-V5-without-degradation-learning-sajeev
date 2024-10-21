@@ -9,7 +9,7 @@ from torchvision.models import VGG19_Weights
 class CustomMiniPatchGAN(nn.Module):
     def __init__(self):
         super(CustomMiniPatchGAN, self).__init__()
-
+        torch.autograd.set_detect_anomaly(True)
         # Initial convolution layer to reduce the channels from 512 to 256
         self.initial = nn.Conv2d(512, 256, kernel_size=3, stride=1, padding=1)
 
@@ -41,6 +41,7 @@ class CustomMiniPatchGAN(nn.Module):
 class SingleChannelVGG(nn.Module):
     def __init__(self):
         super(SingleChannelVGG, self).__init__()
+        torch.autograd.set_detect_anomaly(True)
         vgg19 = models.vgg19(weights=VGG19_Weights.IMAGENET1K_V1)
 
         # Load original VGG features
