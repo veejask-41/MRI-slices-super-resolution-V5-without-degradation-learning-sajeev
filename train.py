@@ -91,8 +91,6 @@ def main():
                     t_comp = (time.time() - epoch_start_time) / epoch_iter
                     visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
 
-                print("checkpoint 01")
-
                 # Save the latest model at the specified frequency
                 if total_iters % opt.save_latest_freq == 0:
                     print(
@@ -103,13 +101,9 @@ def main():
                         model, opt.checkpoint_dir, "latest", epoch, total_iters
                     )
 
-                print("checkpoint 02")
-
             # Display visuals at the specified frequency of the slices of a certain MRI Volume
             # if total_iters % opt.display_freq == 0:
             # model.save_volume(epoch=epoch)
-
-            print("checkpoint 03")
 
             # Save the model at the end of every epoch
             if epoch % opt.save_epoch_freq == 0 and i == len(train_loader) - 1:
@@ -121,8 +115,6 @@ def main():
                     model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
                 )
 
-                print("checkpoint 04")
-
             print(
                 "End of epoch %d / %d \t Time Taken: %d sec"
                 % (
@@ -131,8 +123,6 @@ def main():
                     time.time() - epoch_start_time,
                 )
             )
-
-            print("checkpoint 05")
 
     model.save_final_models()
 
