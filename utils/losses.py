@@ -135,6 +135,9 @@ def perceptual_adversarial_loss(
     l1_loss = F.l1_loss(generated_images, real_images)
     print(f"L1 Loss: {l1_loss.item()}")
 
+    print("Generated Image: ", generated_images.shape)
+    print("Real Image: ", real_images.shape)
+
     # SSIM Loss (1 - SSIM)
     ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=2.0)
     print(f"SSIM Loss: {ssim_loss.item()}")
