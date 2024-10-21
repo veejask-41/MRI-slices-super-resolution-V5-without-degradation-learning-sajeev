@@ -107,7 +107,7 @@ class SuperResolutionModel:
 
         return self.lr_slices[index], self.hr_slices[index]
 
-    def optimize_parameters(self, lr_images, hr_images, lambda_tv):
+    def optimize_parameters(self, lr_images, hr_images, lambda_tv, angle, translation):
         # Step 1: Forward pass through SRUNet
         sr_output = self.sr_unet(lr_images)
 
@@ -118,7 +118,7 @@ class SuperResolutionModel:
         self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
 
         # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
-        blur_kernel = self.degradation_network(sr_output, 30, 1.0)
+        blur_kernel = self.degradation_network(sr_output, angle, translation)
 
         # Step 3: Prepare input for VGGStylePatchGAN
 

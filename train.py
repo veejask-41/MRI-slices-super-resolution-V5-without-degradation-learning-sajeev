@@ -92,9 +92,17 @@ def main():
                 lr_slice, hr_slice = model.get_slice_pair(slice_index)
                 print("Checkpoint 9")
 
+                angle = 45  # degrees
+                translation = (10, 5)  # x and y translation in pixels
+
+                # Forward, backward pass, and optimize with additional parameters
                 model.optimize_parameters(
-                    lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
-                )  # Forward, backward pass, and optimize
+                    lr_images=lr_slice,
+                    hr_images=hr_slice,
+                    lambda_tv=1.0,
+                    angle=angle,
+                    translation=translation,
+                )
 
                 print("Checkpoint 10")
 
