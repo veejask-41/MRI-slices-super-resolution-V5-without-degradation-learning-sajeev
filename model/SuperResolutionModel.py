@@ -315,6 +315,7 @@ class SuperResolutionModel:
         """
         Saves the partially trained SRUNet and VGGStylePatchGAN models to disk.
         """
+        print("Start saving partial models...")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path_sr = os.path.join(checkpoint_dir, f"{filename[0]}.pth")
         checkpoint_path_vgg_patch_gan = os.path.join(
