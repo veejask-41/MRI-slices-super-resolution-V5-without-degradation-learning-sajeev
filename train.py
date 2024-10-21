@@ -83,33 +83,40 @@ def main():
 
             mri_vol = {"LR": low_res_images, "HR": high_res_images}
 
-    #         model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
-    #         print("Checkpoint 7")
+            model.set_input(mri_vol)  # Prepare input data by slicing the MRI volume
+            print("Checkpoint 8")
 
-    #         # Process each slice in the current volume
-    #         num_slices = len(model.lr_slices)
-    #         for slice_index in range(num_slices):
-    #             lr_slice, hr_slice = model.get_slice_pair(slice_index)
+            # Process each slice in the current volume
+            num_slices = len(model.lr_slices)
+            for slice_index in range(num_slices):
+                lr_slice, hr_slice = model.get_slice_pair(slice_index)
+                print("Checkpoint 9")
 
-    #             model.optimize_parameters(
-    #                 lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
-    #             )  # Forward, backward pass, and optimize
+                model.optimize_parameters(
+                    lr_images=lr_slice, hr_images=hr_slice, lambda_tv=1.0
+                )  # Forward, backward pass, and optimize
 
-    #             # Print loss information at the specified frequency
-    #             if total_iters % opt.print_freq == 0:
-    #                 losses = model.get_current_losses()
-    #                 t_comp = (time.time() - epoch_start_time) / epoch_iter
-    #                 visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+                print("Checkpoint 10")
 
-    #             # Save the latest model at the specified frequency
-    #             if total_iters % opt.save_latest_freq == 0:
-    #                 print(
-    #                     "Saving the latest model (epoch %d, total_iters %d)"
-    #                     % (epoch, total_iters)
-    #                 )
-    #                 save_checkpoint(
-    #                     model, opt.checkpoint_dir, "latest", epoch, total_iters
-    #                 )
+                # Print loss information at the specified frequency
+                if total_iters % opt.print_freq == 0:
+                    losses = model.get_current_losses()
+                    t_comp = (time.time() - epoch_start_time) / epoch_iter
+                    visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+
+                print("Checkpoint 11")
+
+                # Save the latest model at the specified frequency
+                if total_iters % opt.save_latest_freq == 0:
+                    print(
+                        "Saving the latest model (epoch %d, total_iters %d)"
+                        % (epoch, total_iters)
+                    )
+                    save_checkpoint(
+                        model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    )
+
+                print("Checkpoint 12")
 
     #         # Display visuals at the specified frequency of the slices of a certain MRI Volume
     #         if total_iters % opt.display_freq == 0:
