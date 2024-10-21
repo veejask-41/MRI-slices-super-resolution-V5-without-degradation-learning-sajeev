@@ -3,7 +3,7 @@ import os
 import numpy as np
 import nibabel as nib
 
-from .SRUNet import SRUNet
+from .SRUNet import SimpleNet
 from .degradation_network import DegradationNetwork
 from .VGGStylePatchGAN import VGGStylePatchGAN
 
@@ -22,13 +22,11 @@ class SuperResolutionModel:
         )
 
         # Initialize the models based on the configuration
-
-        self.sr_unet = SRUNet(
-            image_size=opt.image_size,
-            in_channels=opt.in_channels,
-            out_channels=opt.out_channels,
-            freeze_encoder=opt.freeze_encoder,
-        ).to(
+        # image_size=opt.image_size,
+        # in_channels=opt.in_channels,
+        # out_channels=opt.out_channels,
+        # freeze_encoder=opt.freeze_encoder,
+        self.sr_unet = SimpleNet().to(
             self.device
         )  # Move SRUNet model to the correct device
 
@@ -114,47 +112,137 @@ class SuperResolutionModel:
         return self.lr_slices[index], self.hr_slices[index]
 
     def optimize_parameters(self, lr_images, hr_images, lambda_tv, angle, translation):
-        # Normalize images before feeding to the networks
-        lr_images_normalized = (
-            lr_images / 255.0
-        ) * 2 - 1  # normalization: scale to [-1, 1]
-        hr_images_normalized = (hr_images / 255.0) * 2 - 1
+        # Print input tensor shapes
+        print(f"Initial lr_images shape: {lr_images.shape}")
+        print(f"Initial hr_images shape: {hr_images.shape}")
 
-        # Step 1: Forward pass through SRGAN (SRUNet)
-        sr_output = self.sr_unet(lr_images_normalized)
+        # Step 1: Forward pass through SRUNet
+        sr_output = self.sr_unet(lr_images)
+        # print("sr_output2: ", sr_output2)
+        # sr_output = torch.rand(1, 1, 256, 256, requires_grad=True).to(self.device)
+        # print("sr_output2: ", sr_output2)
+        print(f"Shape of sr_output after SRUNet: {sr_output.shape}")
+
+        # Store SR output for later visualization
+        if "SR" not in self.current_visuals:
+            self.current_visuals["SR"] = []
+
+        self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
+        print(f"Stored sr_output shape in visuals: {sr_output.squeeze().shape}")
+
+        # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
+        blur_kernel = self.degradation_network(sr_output, angle, translation)
+        print(f"Shape of blur_kernel from DegradationNetwork: {blur_kernel.shape}")
 
         # Step 3: Prepare input for VGGStylePatchGAN
-        # Forward pass through VGGStylePatchGAN
-        real_pred = self.vgg_patch_gan(hr_images_normalized)
-        fake_pred = self.vgg_patch_gan(sr_output)
 
-        # Calculate losses
+        # Forward pass through VGGStylePatchGAN
+        real_pred = self.vgg_patch_gan(hr_images)
+        fake_pred = self.vgg_patch_gan(sr_output)
+        print(f"real_pred shape: {real_pred.shape}")
+        print(f"fake_pred shape: {fake_pred.shape}")
+        print("real_pred: ", real_pred)
+        print("fake_pred: ", fake_pred)
+
+        # Add checks before loss calculation
+        if (real_pred < 0).any() or (fake_pred < 0).any():
+            print("Error: Prediction values are negative where expected non-negative.")
+
+        # Step 4: Calculate losses
+        # Loss for SRUNet
+        print(
+            f"Before loss_sr computation, sr_output range: {sr_output.min()} to {sr_output.max()}, hr_images range: {hr_images.min()} to {hr_images.max()}"
+        )
+
+        hr_images = hr_images.clone()
+        hr_min = hr_images.min()
+        hr_max = hr_images.max()
+
+        if hr_max > hr_min:
+            hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
+        else:
+            hr_images_normalized = hr_images - hr_min  # Avoid in-place operation
+
+        # Print to verify normalization
+        print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
+        print(
+            f"Normalized hr_images range: {hr_images_normalized.min()} to {hr_images_normalized.max()}"
+        )
+
+        loss_sr = perceptual_quality_loss(
+            sr_output, hr_images_normalized, alpha=1.0, beta=1.0, gamma=1.0
+        )
+        print(f"Loss SR: {loss_sr}")
+
+        # Feedback loss from DegradationNetwork - affects SRUNet
+        print(
+            f"Before loss_gdn computation, sr_output range: {sr_output.min()} to {sr_output.max()}, lr_images range: {lr_images.min()} to {lr_images.max()}, blur_kernel range: {blur_kernel.min()} to {blur_kernel.max()}"
+        )
+        loss_gdn = GDNLoss(sr_output, lr_images, blur_kernel, lambda_tv)
+        print(f"Loss GDN: {loss_gdn}")
+
+        # Loss for VGGStylePatchGAN
+        print(
+            f"Before loss_gan computation, real_pred range: {real_pred.min()} to {real_pred.max()}, fake_pred range: {fake_pred.min()} to {fake_pred.max()}"
+        )
+        torch.autograd.set_detect_anomaly(True)
         loss_gan = perceptual_adversarial_loss(
             hr_images_normalized,
             sr_output,
             real_pred,
             fake_pred,
-            alpha=1.0,  # Coefficients for perceptual, adversarial, and other losses
+            alpha=1.0,
             beta=1.0,
             gamma=1.0,
             delta=1.0,
         )
 
-        loss_sr = perceptual_quality_loss(
-            sr_output,
-            hr_images_normalized,
-            alpha=1.0,  # Coefficients for quality loss terms
-            beta=1.0,
-            gamma=1.0,
-        )
+        # loss_gan = discriminator_loss(real_preds=real_pred, fake_preds=fake_pred)
 
-        # Output the losses in a dictionary
-        loss_results = {"loss_sr": loss_sr, "loss_gan": loss_gan}
+        print(f"Loss GAN: {loss_gan}")
+
+        # Total loss for SRUNet includes both perceptual and degradation feedback losses
+        total_loss_sr = loss_sr + loss_gdn
+        print(f"Total Loss SR: {total_loss_sr}")
+
+        # Step 5: Backpropagation and optimization for SRUNet
+        self.optimizer_sr.zero_grad()
+        total_loss_sr.backward(
+            retain_graph=True
+        )  # Retain graph for subsequent backpropagation
+        self.optimizer_sr.step()
+
+        print("Backprop SR")
+
+        # Backpropagation and optimization for VGGStylePatchGAN
+        torch.autograd.set_detect_anomaly(True)
+
+        self.optimizer_gan.zero_grad()
+        print("Zero grad discriminator")
+        print("BEFORE")
+        for name, param in self.vgg_patch_gan.named_parameters():
+            if param.requires_grad and param.grad is not None:
+                print(name, param.grad.norm().item())
+
+        loss_gan.backward()
+        print("AFTER")
+        for name, param in self.vgg_patch_gan.named_parameters():
+            if param.requires_grad and param.grad is not None:
+                print(name, param.grad.norm().item())
+        self.optimizer_gan.step()
+
+        print("Backprop VGG PatchGAN")
+
+        # Calculate losses
+        loss_results = {
+            "loss_sr": loss_sr.item(),
+            "loss_gdn": loss_gdn.item(),
+            "loss_gan": loss_gan.item(),
+        }
 
         # Store the current losses
         self.current_losses = loss_results
-
-        return loss_results
+        print(f"Current losses: {self.current_losses}")
 
     def get_current_losses(self):
         """
