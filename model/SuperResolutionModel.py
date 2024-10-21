@@ -118,6 +118,18 @@ class SuperResolutionModel:
         lr_images_normalized = (lr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
         hr_images_normalized = (hr_images / 255.0) * 2 - 1  # Scale to [-1, 1]
 
+        # Assert that all pixel values are within the range [-1, 1]
+        assert torch.all(lr_images_normalized >= -1) and torch.all(
+            lr_images_normalized <= 1
+        ), "lr_images_normalized has values outside [-1, 1]"
+        assert torch.all(hr_images_normalized >= -1) and torch.all(
+            hr_images_normalized <= 1
+        ), "hr_images_normalized has values outside [-1, 1]"
+
+        print(
+            "All pixel values in lr_images_normalized and hr_images_normalized are within the range [-1, 1]"
+        )
+
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
 
