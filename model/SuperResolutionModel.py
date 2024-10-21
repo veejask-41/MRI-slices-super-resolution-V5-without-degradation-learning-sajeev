@@ -123,17 +123,22 @@ class SuperResolutionModel:
         min_val_hr = torch.min(hr_images)
         max_val_hr = torch.max(hr_images)
 
-        # Debugging: Print the min and max values of the original images
-        print(f"LR Image - Min: {min_val_lr.item()}, Max: {max_val_lr.item()}")
-        print(f"HR Image - Min: {min_val_hr.item()}, Max: {max_val_hr.item()}")
-
         # Step 2: Normalize the images based on the min and max values (scaling to [-1, 1])
-        lr_images_normalized = (
-            2 * (lr_images - min_val_lr) / (max_val_lr - min_val_lr) - 1
-        )
-        hr_images_normalized = (
-            2 * (hr_images - min_val_hr) / (max_val_hr - min_val_hr) - 1
-        )
+        # Handle case where min and max are the same (constant image)
+        if max_val_lr == min_val_lr:
+            print("Warning: LR Image has constant pixel values.")
+            lr_images_normalized = torch.zeros_like(lr_images)  # Assign 0
+        else:
+            lr_images_normalized = (
+                2 * (lr_images - min_val_lr) / (max_val_lr - min_val_lr) - 1
+            )
+
+        if max_val_hr == min_val_hr:
+            hr_images_normalized = torch.zeros_like(hr_images)  # Assign 0
+        else:
+            hr_images_normalized = (
+                2 * (hr_images - min_val_hr) / (max_val_hr - min_val_hr) - 1
+            )
 
         # Debugging: Check if any values go outside the expected range after normalization
         print(
