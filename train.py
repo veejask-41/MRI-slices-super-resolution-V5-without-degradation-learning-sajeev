@@ -107,7 +107,7 @@ def main():
 
             # Display visuals at the specified frequency of the slices of a certain MRI Volume
             # if total_iters % opt.display_freq == 0:
-            model.save_volume(epoch=epoch)
+            # model.save_volume(epoch=epoch)
 
             print("checkpoint 03")
 

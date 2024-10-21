@@ -194,7 +194,7 @@ class SuperResolutionModel:
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
 
-        self.current_visuals["SR"].append(sr_output)
+        # self.current_visuals["SR"].append(sr_output)
 
         # Step 3: Prepare input for VGGStylePatchGAN
         # Forward pass through VGGStylePatchGAN
