@@ -116,50 +116,22 @@ class SuperResolutionModel:
         sr_output = self.sr_unet(lr_images)
         print(f"Shape of sr_output after SRUNet: {sr_output.shape}")
 
-        # Normalize hr_images
-        hr_min = hr_images.min()
-        hr_max = hr_images.max()
+        # Store SR output for later visualization
+        if "SR" not in self.current_visuals:
+            self.current_visuals["SR"] = []
 
-        if hr_max > hr_min:
-            hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
-        else:
-            hr_images_normalized = hr_images - hr_min  # Handle case where max == min
-
-        print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
-        print(
-            f"Normalized hr_images range: {hr_images_normalized.min()} to {hr_images_normalized.max()}"
-        )
-
-        # Normalize sr_output to match the range of hr_images
-        sr_min = sr_output.min()
-        sr_max = sr_output.max()
-
-        if sr_max > sr_min:
-            sr_output_normalized = (sr_output - sr_min) / (sr_max - sr_min)
-        else:
-            sr_output_normalized = sr_output - sr_min  # Handle case where max == min
-
-        print(
-            f"Normalized sr_output range: {sr_output_normalized.min()} to {sr_output_normalized.max()}"
-        )
-
-        # Store normalized SR output for later visualization
-        self.current_visuals["SR"].append(
-            sr_output_normalized.squeeze().cpu().detach().numpy()
-        )
-        print(
-            f"Stored sr_output shape in visuals: {sr_output_normalized.squeeze().shape}"
-        )
+        self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
+        print(f"Stored sr_output shape in visuals: {sr_output.squeeze().shape}")
 
         # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
-        blur_kernel = self.degradation_network(sr_output_normalized, angle, translation)
+        blur_kernel = self.degradation_network(sr_output, angle, translation)
         print(f"Shape of blur_kernel from DegradationNetwork: {blur_kernel.shape}")
 
         # Step 3: Prepare input for VGGStylePatchGAN
 
-        # Forward pass through VGGStylePatchGAN using normalized images
-        real_pred = self.vgg_patch_gan(hr_images_normalized)
-        fake_pred = self.vgg_patch_gan(sr_output_normalized)
+        # Forward pass through VGGStylePatchGAN
+        real_pred = self.vgg_patch_gan(hr_images)
+        fake_pred = self.vgg_patch_gan(sr_output)
         print(f"real_pred shape: {real_pred.shape}")
         print(f"fake_pred shape: {fake_pred.shape}")
         print("real_pred: ", real_pred)
@@ -169,21 +141,40 @@ class SuperResolutionModel:
         if (real_pred < 0).any() or (fake_pred < 0).any():
             print("Error: Prediction values are negative where expected non-negative.")
 
-        # Step 4: Calculate losses using normalized images
+        # Step 4: Calculate losses
+        # Loss for SRUNet
         print(
-            f"Before loss_sr computation, sr_output range: {sr_output_normalized.min()} to {sr_output_normalized.max()}, hr_images range: {hr_images_normalized.min()} to {hr_images_normalized.max()}"
+            f"Before loss_sr computation, sr_output range: {sr_output.min()} to {sr_output.max()}, hr_images range: {hr_images.min()} to {hr_images.max()}"
+        )
+
+        # Get the min and max values from hr_images
+        hr_min = hr_images.min()
+        hr_max = hr_images.max()
+
+        # Avoid division by zero in case hr_max == hr_min
+        if hr_max > hr_min:
+            hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
+        else:
+            hr_images_normalized = (
+                hr_images - hr_min
+            )  # This will result in all zeros if hr_max == hr_min
+
+        # Print to verify normalization
+        print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
+        print(
+            f"Normalized hr_images range: {hr_images_normalized.min()} to {hr_images_normalized.max()}"
         )
 
         loss_sr = perceptual_quality_loss(
-            sr_output_normalized, hr_images_normalized, alpha=1.0, beta=1.0, gamma=1.0
+            sr_output, hr_images_normalized, alpha=1.0, beta=1.0, gamma=1.0
         )
         print(f"Loss SR: {loss_sr}")
 
         # Feedback loss from DegradationNetwork - affects SRUNet
         print(
-            f"Before loss_gdn computation, sr_output range: {sr_output_normalized.min()} to {sr_output_normalized.max()}, lr_images range: {lr_images.min()} to {lr_images.max()}, blur_kernel range: {blur_kernel.min()} to {blur_kernel.max()}"
+            f"Before loss_gdn computation, sr_output range: {sr_output.min()} to {sr_output.max()}, lr_images range: {lr_images.min()} to {lr_images.max()}, blur_kernel range: {blur_kernel.min()} to {blur_kernel.max()}"
         )
-        loss_gdn = GDNLoss(sr_output_normalized, lr_images, blur_kernel, lambda_tv)
+        loss_gdn = GDNLoss(sr_output, lr_images, blur_kernel, lambda_tv)
         print(f"Loss GDN: {loss_gdn}")
 
         # Loss for VGGStylePatchGAN
@@ -192,7 +183,7 @@ class SuperResolutionModel:
         )
         loss_gan = perceptual_adversarial_loss(
             hr_images_normalized,
-            sr_output_normalized,
+            sr_output,
             real_pred,
             fake_pred,
             alpha=1.0,
