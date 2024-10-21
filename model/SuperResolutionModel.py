@@ -118,7 +118,7 @@ class SuperResolutionModel:
         self.current_visuals["SR"].append(sr_output.squeeze().cpu().detach().numpy())
 
         # Step 2: Pass SRUNet output through DegradationNetwork to compute the feedback loss
-        blur_kernel = self.degradation_network(sr_output)
+        blur_kernel = self.degradation_network(sr_output, 30, 1.0)
 
         # Step 3: Prepare input for VGGStylePatchGAN
 
