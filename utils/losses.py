@@ -136,7 +136,7 @@ def perceptual_adversarial_loss(
     print(f"L1 Loss: {l1_loss.item()}")
 
     # SSIM Loss (1 - SSIM)
-    ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=1.0)
+    ssim_loss = 1 - piq.ssim(generated_images, real_images, data_range=2.0)
     print(f"SSIM Loss: {ssim_loss.item()}")
 
     # PSNR Loss
