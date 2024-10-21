@@ -111,9 +111,9 @@ def main():
                     "Saving the model at the end of epoch %d, iters %d"
                     % (epoch, total_iters)
                 )
-                save_checkpoint(
-                    model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
-                )
+                # save_checkpoint(
+                #     model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
+                # )
                 model.save_checkpoint(
                     opt.checkpoint_dir,
                     ["sr epoch_%d" % epoch, "vgg_patchgan epoch_%d" % epoch],
