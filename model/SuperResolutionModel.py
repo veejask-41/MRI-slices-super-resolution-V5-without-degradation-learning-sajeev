@@ -151,13 +151,19 @@ class SuperResolutionModel:
         hr_min = hr_images.min()
         hr_max = hr_images.max()
 
-        # Avoid division by zero in case hr_max == hr_min
+        # Instead of this (potentially problematic if modifying tensors in-place)
+        hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
+
+        # Do this (ensure out-of-place and clarity in operations)
+        hr_images_normalized = (
+            hr_images.clone()
+        )  # Clone to ensure no in-place modification
         if hr_max > hr_min:
-            hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
+            hr_images_normalized = (hr_images_normalized - hr_min) / (hr_max - hr_min)
         else:
-            hr_images_normalized = (
-                hr_images - hr_min
-            )  # This will result in all zeros if hr_max == hr_min
+            hr_images_normalized.fill_(
+                0
+            )  # Use fill_ here safely since it's already a cloned tensor
 
         # Print to verify normalization
         print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
