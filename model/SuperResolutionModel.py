@@ -53,8 +53,8 @@ class SuperResolutionModel:
         self.hr_slices.clear()
 
         # Ensure data has the right structure and load LR and HR volumes
-        lr_volume = data["LR"]  # Expected shape: (150, 256, 256)
-        hr_volume = data["HR"]  # Expected shape: (150, 256, 256)
+        lr_volume = data["LR"].squeeze(0)  # Expected shape: (150, 256, 256)
+        hr_volume = data["HR"].squeeze(0)  # Expected shape: (150, 256, 256)
 
         # Check the dimensions of the input data
         assert (
