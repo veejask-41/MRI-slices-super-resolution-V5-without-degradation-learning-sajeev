@@ -146,8 +146,27 @@ class SuperResolutionModel:
         print(
             f"Before loss_sr computation, sr_output range: {sr_output.min()} to {sr_output.max()}, hr_images range: {hr_images.min()} to {hr_images.max()}"
         )
+
+        # Get the min and max values from hr_images
+        hr_min = hr_images.min()
+        hr_max = hr_images.max()
+
+        # Avoid division by zero in case hr_max == hr_min
+        if hr_max > hr_min:
+            hr_images_normalized = (hr_images - hr_min) / (hr_max - hr_min)
+        else:
+            hr_images_normalized = (
+                hr_images - hr_min
+            )  # This will result in all zeros if hr_max == hr_min
+
+        # Print to verify normalization
+        print(f"Original hr_images range: {hr_min.item()} to {hr_max.item()}")
+        print(
+            f"Normalized hr_images range: {hr_images_normalized.min()} to {hr_images_normalized.max()}"
+        )
+
         loss_sr = perceptual_quality_loss(
-            sr_output, hr_images, alpha=1.0, beta=1.0, gamma=1.0
+            sr_output, hr_images_normalized, alpha=1.0, beta=1.0, gamma=1.0
         )
         print(f"Loss SR: {loss_sr}")
 
