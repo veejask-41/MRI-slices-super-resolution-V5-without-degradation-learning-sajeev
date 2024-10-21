@@ -186,18 +186,18 @@ class SuperResolutionModel:
             f"Before loss_gan computation, real_pred range: {real_pred.min()} to {real_pred.max()}, fake_pred range: {fake_pred.min()} to {fake_pred.max()}"
         )
         torch.autograd.set_detect_anomaly(True)
-        # loss_gan = perceptual_adversarial_loss(
-        #     hr_images_normalized,
-        #     sr_output,
-        #     real_pred,
-        #     fake_pred,
-        #     alpha=1.0,
-        #     beta=1.0,
-        #     gamma=1.0,
-        #     delta=1.0,
-        # )
+        loss_gan = perceptual_adversarial_loss(
+            hr_images_normalized,
+            sr_output,
+            real_pred,
+            fake_pred,
+            alpha=1.0,
+            beta=1.0,
+            gamma=1.0,
+            delta=1.0,
+        )
 
-        loss_gan = discriminator_loss(real_preds=real_pred, fake_preds=fake_pred)
+        # loss_gan = discriminator_loss(real_preds=real_pred, fake_preds=fake_pred)
 
         print(f"Loss GAN: {loss_gan}")
 
@@ -219,7 +219,16 @@ class SuperResolutionModel:
 
         self.optimizer_gan.zero_grad()
         print("Zero grad discriminator")
+        print("BEFORE")
+        for name, param in self.vgg_patch_gan.named_parameters():
+            if param.requires_grad and param.grad is not None:
+                print(name, param.grad.norm().item())
+
         loss_gan.backward()
+        print("AFTER")
+        for name, param in self.vgg_patch_gan.named_parameters():
+            if param.requires_grad and param.grad is not None:
+                print(name, param.grad.norm().item())
         self.optimizer_gan.step()
 
         print("Backprop VGG PatchGAN")
