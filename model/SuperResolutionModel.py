@@ -48,7 +48,7 @@ class SuperResolutionModel:
         self.hr_slices = []
 
         self.current_losses = {}
-        self.current_visuals = {}
+        self.current_visuals = {"SR": [], "HR": []}
 
     def set_input(self, data):
         """
@@ -193,6 +193,8 @@ class SuperResolutionModel:
 
         # Step 1: Forward pass through SRGAN (SRUNet)
         sr_output = self.sr_unet(lr_images_normalized)
+
+        self.current_visuals["SR"].append(sr_output)
 
         # Step 3: Prepare input for VGGStylePatchGAN
         # Forward pass through VGGStylePatchGAN
