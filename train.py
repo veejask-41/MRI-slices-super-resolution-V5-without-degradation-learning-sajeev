@@ -53,6 +53,7 @@ def main():
         epoch_iter = 0
 
         for i, data in enumerate(train_loader, 0):
+            epoch_iter += 1
             low_res_images, high_res_images = data[0][i], data[1][i]
 
             print(
@@ -89,52 +90,46 @@ def main():
                     translation=translation,
                 )
 
-                print("Checkpoint 1")
-
                 # Print loss information at the specified frequency
-                # if total_iters % opt.print_freq == 0:
-                #     losses = model.get_current_losses()
-                #     t_comp = (time.time() - epoch_start_time) / epoch_iter
-                #     visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
+                if total_iters % opt.print_freq == 0:
+                    losses = model.get_current_losses()
+                    t_comp = (time.time() - epoch_start_time) / epoch_iter
+                    visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
 
-                # print("Checkpoint 11")
+                # Save the latest model at the specified frequency
+                if total_iters % opt.save_latest_freq == 0:
+                    print(
+                        "Saving the latest model (epoch %d, total_iters %d)"
+                        % (epoch, total_iters)
+                    )
+                    save_checkpoint(
+                        model, opt.checkpoint_dir, "latest", epoch, total_iters
+                    )
 
-                # # Save the latest model at the specified frequency
-                # if total_iters % opt.save_latest_freq == 0:
-                #     print(
-                #         "Saving the latest model (epoch %d, total_iters %d)"
-                #         % (epoch, total_iters)
-                #     )
-                #     save_checkpoint(
-                #         model, opt.checkpoint_dir, "latest", epoch, total_iters
-                #     )
+            # Display visuals at the specified frequency of the slices of a certain MRI Volume
+            if total_iters % opt.display_freq == 0:
+                model.save_volume(epoch=epoch)
 
-                # print("Checkpoint 12")
+            # Save the model at the end of every epoch
+            if epoch % opt.save_epoch_freq == 0 and i == len(train_loader) - 1:
+                print(
+                    "Saving the model at the end of epoch %d, iters %d"
+                    % (epoch, total_iters)
+                )
+                save_checkpoint(
+                    model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
+                )
 
-    #         # Display visuals at the specified frequency of the slices of a certain MRI Volume
-    #         if total_iters % opt.display_freq == 0:
-    #             model.save_volume(epoch=epoch)
+            print(
+                "End of epoch %d / %d \t Time Taken: %d sec"
+                % (
+                    epoch,
+                    opt.n_epochs + opt.n_epochs_decay,
+                    time.time() - epoch_start_time,
+                )
+            )
 
-    #         # Save the model at the end of every epoch
-    #         if epoch % opt.save_epoch_freq == 0 and i == len(train_loader) - 1:
-    #             print(
-    #                 "Saving the model at the end of epoch %d, iters %d"
-    #                 % (epoch, total_iters)
-    #             )
-    #             save_checkpoint(
-    #                 model, opt.checkpoint_dir, "epoch_%d" % epoch, epoch, total_iters
-    #             )
-
-    #         print(
-    #             "End of epoch %d / %d \t Time Taken: %d sec"
-    #             % (
-    #                 epoch,
-    #                 opt.n_epochs + opt.n_epochs_decay,
-    #                 time.time() - epoch_start_time,
-    #             )
-    #         )
-
-    # model.save_final_models()
+    model.save_final_models()
 
 
 if __name__ == "__main__":
