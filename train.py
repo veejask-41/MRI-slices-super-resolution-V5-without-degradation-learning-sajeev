@@ -91,21 +91,21 @@ def main():
                     t_comp = (time.time() - epoch_start_time) / epoch_iter
                     visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp)
 
-                # Save the latest model at the specified frequency
-                if total_iters % opt.save_latest_freq == 0:
-                    print(
-                        "Saving the latest model (epoch %d, total_iters %d)"
-                        % (epoch, total_iters)
-                    )
-                    # save_checkpoint(
-                    #     model, opt.checkpoint_dir, "latest", epoch, total_iters
-                    # )
-                    model.save_checkpoint(
-                        opt.checkpoint_dir,
-                        ["sr epoch_%d" % epoch, "vgg_patchgan epoch_%d" % epoch],
-                        epoch,
-                        total_iters,
-                    )
+            # Save the latest model at the specified frequency
+            if total_iters % opt.save_latest_freq == 0:
+                print(
+                    "Saving the latest model (epoch %d, total_iters %d)"
+                    % (epoch, total_iters)
+                )
+                # save_checkpoint(
+                #     model, opt.checkpoint_dir, "latest", epoch, total_iters
+                # )
+                model.save_checkpoint(
+                    opt.checkpoint_dir,
+                    ["sr epoch_%d" % epoch, "vgg_patchgan epoch_%d" % epoch],
+                    epoch,
+                    total_iters,
+                )
 
             # Display visuals at the specified frequency of the slices of a certain MRI Volume
             # if total_iters % opt.display_freq == 0:
