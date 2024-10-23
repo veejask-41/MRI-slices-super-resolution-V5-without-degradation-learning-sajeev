@@ -207,6 +207,9 @@ class SuperResolutionModel:
         loss_sr = perceptual_quality_loss(
             sr_output,
             hr_images_normalized,
+            alpha=0.7,
+            beta=0.8,
+            gamma=0.25,
         )
 
         # Output the losses in a dictionary

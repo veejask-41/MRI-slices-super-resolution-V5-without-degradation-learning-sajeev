@@ -45,13 +45,13 @@ class TrainOptions:
         self.parser.add_argument(
             "--n_epochs",
             type=int,
-            default=10,
+            default=20,
             help="Number of epochs at the initial learning rate",
         )
         self.parser.add_argument(
             "--n_epochs_decay",
             type=int,
-            default=10,
+            default=15,
             help="Number of epochs to linearly decay the learning rate to zero",
         )
         self.parser.add_argument(
