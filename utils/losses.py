@@ -34,7 +34,7 @@ def perceptual_quality_loss(output, target, alpha=1.0, beta=1.0, gamma=1.0):
     return combined_loss
 
 
-def perceptual_quality_loss(output, target, alpha=1.0, beta=1.0, gamma=1.0):
+def perceptual_quality_loss(output, target, alpha=0.5, beta=1.0, gamma=0.25):
     """
     Computes a weighted combination of L1, SSIM, and PSNR losses.
 

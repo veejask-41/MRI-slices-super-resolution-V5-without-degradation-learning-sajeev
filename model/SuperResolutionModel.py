@@ -202,23 +202,11 @@ class SuperResolutionModel:
         fake_pred = self.vgg_patch_gan(sr_output)
 
         # Calculate losses
-        loss_gan = perceptual_adversarial_loss(
-            hr_images_normalized,
-            sr_output,
-            real_pred,
-            fake_pred,
-            alpha=1.0,
-            beta=1.0,
-            gamma=1.0,
-            delta=1.0,
-        )
+        loss_gan = discriminator_loss(real_preds=real_pred, fake_preds=fake_pred)
 
         loss_sr = perceptual_quality_loss(
             sr_output,
             hr_images_normalized,
-            alpha=1.0,
-            beta=1.0,
-            gamma=1.0,
         )
 
         # Output the losses in a dictionary
