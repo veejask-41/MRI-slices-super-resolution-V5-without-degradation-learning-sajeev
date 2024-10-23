@@ -1,54 +1,54 @@
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0323_ge_3_56_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0323_ge_3_56_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0060_philips_3_29_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0060_philips_3_29_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0061_philips_3_55_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0061_philips_3_55_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0091_philips_3_51_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0091_philips_3_51_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0074_philips_3_53_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0074_philips_3_53_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0140_siemens_15_57_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0140_siemens_15_57_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0325_ge_3_55_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0325_ge_3_55_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0261_ge_15_59_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0261_ge_15_59_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0313_ge_3_34_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0313_ge_3_34_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0326_ge_3_55_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0326_ge_3_55_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0219_siemens_3_49_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0219_siemens_3_49_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0082_philips_3_64_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0082_philips_3_64_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0087_philips_3_42_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0087_philips_3_42_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0177_siemens_15_57_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0177_siemens_15_57_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0031_philips_15_65_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0031_philips_15_65_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0259_ge_15_56_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0259_ge_15_56_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0228_siemens_3_66_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0228_siemens_3_66_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0281_ge_15_56_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0281_ge_15_56_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0286_ge_15_55_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0286_ge_15_55_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0121_siemens_15_61_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0121_siemens_15_61_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0316_ge_3_57_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0316_ge_3_57_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0032_philips_15_44_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0032_philips_15_44_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0266_ge_15_57_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0266_ge_15_57_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0150_siemens_15_47_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0150_siemens_15_47_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0312_ge_3_49_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0312_ge_3_49_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0077_philips_3_43_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0077_philips_3_43_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0223_siemens_3_56_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0223_siemens_3_56_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0252_ge_15_44_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0252_ge_15_44_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0342_ge_3_50_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0342_ge_3_50_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0153_siemens_15_52_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0153_siemens_15_52_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0279_ge_15_49_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0279_ge_15_49_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0255_ge_15_57_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0255_ge_15_57_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0005_philips_15_62_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0005_philips_15_62_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0197_siemens_3_54_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0197_siemens_3_54_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0085_philips_3_71_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0085_philips_3_71_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0149_siemens_15_53_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0149_siemens_15_53_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0242_ge_15_55_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0242_ge_15_55_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0173_siemens_15_51_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0173_siemens_15_51_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0226_siemens_3_64_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0226_siemens_3_64_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0026_philips_15_65_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0026_philips_15_65_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0064_philips_3_49_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0064_philips_3_49_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0263_ge_15_51_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0263_ge_15_51_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0113_philips_3_45_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0113_philips_3_45_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0111_philips_3_51_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0111_philips_3_51_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0122_siemens_15_53_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0122_siemens_15_53_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0320_ge_3_57_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0320_ge_3_57_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0250_ge_15_60_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0250_ge_15_60_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0215_siemens_3_46_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0215_siemens_3_46_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0218_siemens_3_61_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0218_siemens_3_61_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0234_siemens_3_57_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0234_siemens_3_57_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0161_siemens_15_55_F.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0161_siemens_15_55_F.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0256_ge_15_42_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0256_ge_15_42_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0103_philips_3_56_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0103_philips_3_56_M.nii
-/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0116_philips_3_50_M.nii,/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0116_philips_3_50_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0044_philips_15_36_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0044_philips_15_36_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0057_philips_15_61_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0057_philips_15_61_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0243_ge_15_58_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0243_ge_15_58_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0224_siemens_3_62_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0224_siemens_3_62_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0038_philips_15_41_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0038_philips_15_41_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0241_ge_15_60_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0241_ge_15_60_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0075_philips_3_41_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0075_philips_3_41_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0227_siemens_3_58_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0227_siemens_3_58_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0071_philips_3_56_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0071_philips_3_56_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0063_philips_3_53_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0063_philips_3_53_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0020_philips_15_65_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0020_philips_15_65_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0300_ge_3_58_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0300_ge_3_58_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0125_siemens_15_65_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0125_siemens_15_65_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0076_philips_3_44_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0076_philips_3_44_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0203_siemens_3_56_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0203_siemens_3_56_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0355_ge_3_55_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0355_ge_3_55_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0162_siemens_15_39_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0162_siemens_15_39_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0178_siemens_15_55_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0178_siemens_15_55_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0081_philips_3_67_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0081_philips_3_67_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0021_philips_15_48_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0021_philips_15_48_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0268_ge_15_57_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0268_ge_15_57_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0012_philips_15_43_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0012_philips_15_43_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0238_siemens_3_58_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0238_siemens_3_58_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0153_siemens_15_52_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0153_siemens_15_52_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0149_siemens_15_53_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0149_siemens_15_53_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0137_siemens_15_65_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0137_siemens_15_65_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0101_philips_3_52_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0101_philips_3_52_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0197_siemens_3_54_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0197_siemens_3_54_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0144_siemens_15_43_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0144_siemens_15_43_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0270_ge_15_59_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0270_ge_15_59_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0350_ge_3_62_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0350_ge_3_62_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0310_ge_3_51_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0310_ge_3_51_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0242_ge_15_55_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0242_ge_15_55_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0156_siemens_15_55_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0156_siemens_15_55_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0294_ge_15_51_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0294_ge_15_51_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0134_siemens_15_54_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0134_siemens_15_54_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0182_siemens_3_60_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0182_siemens_3_60_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0260_ge_15_51_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0260_ge_15_51_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0106_philips_3_41_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0106_philips_3_41_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0011_philips_15_49_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0011_philips_15_49_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0283_ge_15_44_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0283_ge_15_44_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0135_siemens_15_52_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0135_siemens_15_52_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0296_ge_15_57_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0296_ge_15_57_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0331_ge_3_61_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0331_ge_3_61_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0297_ge_15_57_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0297_ge_15_57_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0303_ge_3_53_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0303_ge_3_53_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0009_philips_15_69_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0009_philips_15_69_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0058_philips_15_64_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0058_philips_15_64_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0252_ge_15_44_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0252_ge_15_44_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0336_ge_3_53_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0336_ge_3_53_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0164_siemens_15_54_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0164_siemens_15_54_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0318_ge_3_52_F.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0318_ge_3_52_F.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0217_siemens_3_45_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0217_siemens_3_45_M.nii
+/kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/Low-Res/lowres_CC0027_philips_15_41_M.nii, /kaggle/input/high-res-and-low-res-mri/Refined-MRI-dataset/High-Res/CC0027_philips_15_41_M.nii
